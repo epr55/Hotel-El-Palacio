@@ -21,3 +21,5 @@ php artisan migrate
 php artisan serve
 ```
 
+TABLERO TRELLO
+https://trello.com/invite/b/69501af89f06f83c1e01ea60/ATTI0fc1be845a59470146fc04e40321dc8eCE9C47B5/iw-parte-2
