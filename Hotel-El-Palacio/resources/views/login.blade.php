@@ -9,13 +9,14 @@
 
         <h3 class="login-title">Iniciar Sesión</h3>
 
-        <form>
+        <form method="POST" action="{{ route('login.post') }}">
+            @csrf
 
             <label>Email *</label>
-            <input type="email" placeholder="email@address.com" required>
+            <input type="email" name="correo" value="{{ old('correo') }}" required>
 
             <label>Contraseña *</label>
-            <input type="password" placeholder="************" required>
+            <input type="password" name="password" required>
 
             <a href="#" class="forgot">¿Contraseña olvidada?</a>
 
@@ -23,9 +24,8 @@
             <button type="button" class="btn-cancel">Cancelar</button>
 
             <p class="register-text">
-                ¿Eres nuevo? <a href="#">Regístrate aquí</a>
+                ¿Eres nuevo? <a href="{{ route('registro') }}">Regístrate aquí</a>
             </p>
-
         </form>
 
     </div>
