@@ -9,35 +9,31 @@
 
         <h3 class="login-title">Registro</h3>
 
-        <form>
+        <form action="{{ route('registro.store') }}" method="POST">
+            @csrf
 
-            <div class="row-2">
-                <div>
-                    <label>Nombre</label>
-                    <input type="text" placeholder="Nombre">
-                </div>
-                <div>
-                    <label>Apellido</label>
-                    <input type="text" placeholder="Apellido">
-                </div>
-            </div>
+            <label>Nombre</label>
+            <input type="text" name="nombre" placeholder="Nombre" required>
 
             <label>Email</label>
-            <input type="email" placeholder="email@address.com">
+            <input type="email" name="correo" placeholder="email@address.com" required>
 
             <label>Teléfono</label>
-            <input type="tel" placeholder="123 456 789">
+            <input type="tel" name="telefono" placeholder="123 456 789">
 
             <label>Contraseña</label>
-            <input type="password" placeholder="************">
+            <input type="password" name="password" placeholder="************" required>
+
+            <label>Confirmar contraseña</label>
+            <input type="password" name="password_confirmation" placeholder="************" required>
 
             <div class="terms">
-                <input type="checkbox">
-                <span>Acepto los términos y condiciones</span>
+                <input type="checkbox" required>
+                <label for="terms">Acepto los Términos de Servicio y la Política de Privacidad</label>
             </div>
 
             <div class="row-2-buttons">
-                <button class="btn-login-main">Añadir Usuario</button>
+                <button type="submit" class="btn-login-main">Añadir Usuario</button>
                 <button type="button" class="btn-cancel">Cancelar</button>
             </div>
 

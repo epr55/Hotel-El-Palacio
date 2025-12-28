@@ -87,7 +87,7 @@
         .login-box label {
             font-size: 14px;
             font-weight: 600;
-            margin-top: 14px;
+            margin-top: 8px;
         }
 
         .login-box input {
@@ -95,7 +95,7 @@
             padding: 10px;
             border: 1px solid #BDC1C7;
             border-radius: 8px;
-            margin-bottom: 14px;
+            margin-bottom: 8px;
         }
 
         .forgot {
@@ -111,7 +111,7 @@
             border: none;
             border-radius: 8px;
             padding: 12px;
-            margin-top: 14px;
+            margin-top: 8px;
             font-weight: 600;
         }
 
@@ -121,7 +121,7 @@
             color: #333;
             border: none;
             border-radius: 8px;
-            padding: 12px;
+            padding: 8px;
             margin-top: 10px;
         }
 
@@ -147,16 +147,54 @@
 
         .terms {
             display: flex;
-            align-items: center;
+            align-items: baseline;
+            justify-content: flex-start;
             gap: 8px;
-            margin: 10px 0 20px;
+            margin: 4px 0 12px;
             font-size: 14px;
+        }
+
+        .terms input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+            flex-shrink: 0;
+            vertical-align: middle;
         }
 
         .row-2-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
+        }
+
+        .navbar-left img.logo-img {
+            height: 50px;
+            width: auto;
+        }
+
+        .navbar-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Mozilla Headline', sans-serif;
+            font-weight: 700;
+            font-size: 38px;
+            color: #DF9E2D;
+        }
+
+        .navbar-right button {
+            background-color: #E15218;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .navbar-right button:hover {
+            background-color: #DC4C18;
+            color: #fff;
         }
 
     </style>
@@ -167,14 +205,15 @@
 
     <nav class="navbar">
         <div class="container">
-            <div class="logo">
-                HOTEL EL PALACIO
+            <div class="navbar-left">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="logo-img">
             </div>
-            <div class="navegacion">
-                <a>Inicio</a>
-                <a>Habitaciones</a>
-                <a>Servicios</a>
+
+            
+            <div class="navbar-center">
+                Hotel El Palacio
             </div>
+
             <div class="sesion">
                 <a href="{{ route('login') }}">
                     <button>Iniciar Sesión</button>
