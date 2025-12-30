@@ -3,15 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Categoria extends Model
 {
+    use HasFactory;
     protected $table = 'categorias';
-
-    protected $fillable = ['nombre', 'capacidad', 'descripcion'];
+    protected $primaryKey = 'id';
+    public $timestamps = false;
+    protected $fillable = ['id','nombre','capacidad','descripcion'];
 
     public function habitaciones()
     {
-        return $this->hasMany(Habitacion::class);
+        return $this->hasMany(Habitacion::class, 'categorias', 'id');
     }
 }

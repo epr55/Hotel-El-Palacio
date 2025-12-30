@@ -9,22 +9,13 @@ return new class extends Migration {
     {
         Schema::create('reservas', function (Blueprint $table) {
             $table->id();
+            $table->string('estado');
             $table->dateTime('fecha_inicio');
             $table->dateTime('fecha_final');
             $table->float('precio_total');
-
-            $table->foreignId('usuario_id')
-                  ->constrained('usuarios')
-                  ->onDelete('cascade');
-
-            $table->foreignId('habitacion_id')
-                  ->constrained('habitaciones')
-                  ->onDelete('cascade');
-
-            $table->foreignId('temporada_id')
-                  ->constrained('temporadas')
-                  ->onDelete('cascade');
-
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('habitacion_id')->constrained('habitaciones')->onDelete('cascade');
+            $table->foreignId('temporada_id')->constrained('temporadas')->onDelete('cascade');
             $table->timestamps();
         });
     }

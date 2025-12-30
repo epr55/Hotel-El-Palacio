@@ -3,32 +3,28 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Habitacion extends Model
 {
-    protected $table = 'habitaciones';
-
-    protected $fillable = [
-        'numero','precio','aseos','balcon','escritorio','cuna','categoria_id'
-    ];
+    use HasFactory;
+    protected $table = "habitaciones";
+    protected $primaryKey = 'id';
+    public $timestamps = false;
+    protected $fillable = ['id','numero','precio','aseos','balcon','escritorio','cuna','categoria_id'];
 
     public function categoria()
     {
-        return $this->belongsTo(Categoria::class);
+        return $this->belongsTo(Categoria::class, 'categoria_id', 'id');
     }
 
     public function reservas()
     {
-        return $this->hasMany(Reserva::class);
+        return $this->hasMany(Reserva::class, 'habitaciones', 'id');
     }
 
     public function mantenimientos()
     {
-        return $this->hasMany(Mantenimiento::class);
-    }
-
-    public function comentarios()
-    {
-        return $this->hasMany(Comentario::class);
+        return $this->hasMany(Mantenimiento::class, 'habitaciones', 'id');
     }
 }

@@ -12,11 +12,7 @@ return new class extends Migration {
             $table->dateTime('fecha_inicio');
             $table->dateTime('fecha_final');
             $table->string('motivo')->nullable();
-
-            $table->foreignId('habitacion_id')
-                  ->constrained('habitaciones')
-                  ->onDelete('cascade');
-
+            $table->foreignId('habitacion_id')->constrained('habitaciones')->onDelete('cascade');
             $table->timestamps();
         });
     }
