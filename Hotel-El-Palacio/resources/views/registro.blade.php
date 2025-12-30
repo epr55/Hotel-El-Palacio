@@ -22,10 +22,10 @@
             <input type="tel" name="telefono" placeholder="123 456 789">
 
             <label>Contraseña</label>
-            <input type="password" name="password" placeholder="************" required>
+            <input type="password" name="password" required>
 
             <label>Confirmar contraseña</label>
-            <input type="password" name="password_confirmation" placeholder="************" required>
+            <input type="password" name="password_confirmation" required>
 
             <div class="terms">
                 <input type="checkbox" required>
