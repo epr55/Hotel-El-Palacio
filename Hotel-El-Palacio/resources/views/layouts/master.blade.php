@@ -209,21 +209,26 @@
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" class="logo-img">
             </div>
 
-            
-            <div class="navbar-center">
+            <a href="{{ route('home') }}" class="navbar-center" style="text-decoration: none; color: inherit;">
                 Hotel El Palacio
-            </div>
+            </a>
 
             <div class="navbar-right d-flex align-items-center gap-3">
                 @auth
-                    <span style="
-                        color: #D39D55; 
-                        font-weight: 500; 
-                        font-family: 'Mozilla Headline', sans-serif; 
-                        font-size: 1.25rem;
-                    ">{{ Auth::user()->nombre }}</span>
-                    <img src="{{ asset('images/perfil.png') }}" alt="Foto de perfil" 
-                        style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                    <a href="{{ route('perfil') }}" style="text-decoration: none;">
+                        <span style="
+                            color: #D39D55; 
+                            font-weight: 500; 
+                            font-family: 'Mozilla Headline', sans-serif; 
+                            font-size: 1.25rem;
+                            cursor: pointer;
+                        ">
+                            {{ Auth::user()->name }}
+                        </span>
+                    
+                        <img src="{{ asset('images/perfil.png') }}" alt="Foto de perfil" 
+                            style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                    </a>
                     <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
                         @csrf
                         <button type="submit" class="btn-logout btn btn-outline-danger btn-sm">Cerrar sesión</button>

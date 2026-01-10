@@ -3,6 +3,7 @@
     use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\RegistroController;
     use App\Http\Controllers\LoginController;
+    use App\Http\Controllers\PerfilController;
 
     Route::get('/', function () {
         return view('inicio');
@@ -21,3 +22,15 @@
 
     //Ruta para el logout
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+    Route::middleware(['auth'])->group(function () {
+    
+        // Ver el perfil
+        Route::get('/perfil', function () { 
+            return view('perfil'); 
+        })->name('perfil');
+
+        // Actualizar el perfil (Esta es la que faltaba)
+        Route::put('/perfil/actualizar', [PerfilController::class, 'update'])->name('perfil.update');
+        
+    });
