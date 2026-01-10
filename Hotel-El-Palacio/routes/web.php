@@ -4,6 +4,7 @@
     use App\Http\Controllers\RegistroController;
     use App\Http\Controllers\LoginController;
     use App\Http\Controllers\PerfilController;
+    use App\Http\Controllers\BusquedaController;
 
     Route::get('/', function () {
         return view('inicio');
@@ -22,6 +23,9 @@
 
     //Ruta para el logout
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+    //Ruta para el buscador
+    Route::get('/busqueda', [BusquedaController::class, 'index'])->name('busqueda');
 
     Route::middleware(['auth'])->group(function () {
     

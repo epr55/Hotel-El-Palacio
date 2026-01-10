@@ -1,10 +1,11 @@
 @extends('layouts.master')
 
-@section('title', 'Inicio')
+@section('title', 'Resultados de Búsqueda')
 
 @section('content')
     <div class="hero-search-wrapper" style="
-        padding: 40px 20px; 
+        padding: 0 20px; 
+        margin-top: 40px; /* Esto lo baja respecto al navbar */
         display: flex; 
         justify-content: center;
     ">
@@ -35,7 +36,7 @@
             ">
                 <div style="flex: 1; min-width: 200px;">
                     <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Check-in</label>
-                    <input type="date" name="checkin" value="2025-12-27" style="
+                    <input type="date" name="checkin" value="{{ $checkin }}" style="
                         width: 100%; 
                         padding: 12px; 
                         border: 1px solid #ccc; 
@@ -46,7 +47,7 @@
 
                 <div style="flex: 1; min-width: 200px;">
                     <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Check-out</label>
-                    <input type="date" name="checkout" value="2026-01-02" style="
+                    <input type="date" name="checkout" value="{{ $checkout }}" style="
                         width: 100%; 
                         padding: 12px; 
                         border: 1px solid #ccc; 
@@ -65,10 +66,10 @@
                         font-size: 1rem;
                         background-color: white;
                     ">
-                        <option value="1">1 Huésped</option>
-                        <option value="2">2 Huéspedes</option>
-                        <option value="3">3 Huéspedes</option>
-                        <option value="4" selected>4 Huéspedes</option>
+                        <option value="1" {{ $huespedes == 1 ? 'selected' : '' }}>1 Huésped</option>
+                        <option value="2" {{ $huespedes == 2 ? 'selected' : '' }}>2 Huéspedes</option>
+                        <option value="3" {{ $huespedes == 3 ? 'selected' : '' }}>3 Huéspedes</option>
+                        <option value="4" {{ $huespedes == 4 ? 'selected' : '' }}>4 Huéspedes</option>
                     </select>
                 </div>
 
@@ -76,14 +77,13 @@
                     <button type="submit" style="
                         width: 100%; 
                         padding: 13px; 
-                        background-color: #E64A19;
+                        background-color: #E64A19; 
                         color: white; 
                         border: none; 
                         border-radius: 10px; 
                         font-weight: bold; 
                         font-size: 1.2rem;
                         cursor: pointer;
-                        transition: background 0.3s;
                     ">
                         Buscar
                     </button>
