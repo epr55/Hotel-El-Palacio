@@ -20,11 +20,11 @@ class Habitacion extends Model
 
     public function reservas()
     {
-        return $this->hasMany(Reserva::class, 'habitaciones', 'id');
+        return $this->hasMany(Reserva::class, 'habitacion_id', 'id');
     }
 
     public function mantenimientos()
     {
-        return $this->hasMany(Mantenimiento::class, 'habitaciones', 'id');
+        return $this->hasMany(Mantenimiento::class, 'habitacion_id', 'id');
     }
 }
