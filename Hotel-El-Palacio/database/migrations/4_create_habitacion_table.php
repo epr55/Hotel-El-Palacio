@@ -10,11 +10,14 @@ return new class extends Migration {
         Schema::create('habitaciones', function (Blueprint $table) {
             $table->id();
             $table->integer('numero');
+            $table->integer('camas_individual');
+            $table->integer('camas_doble');
             $table->bigInteger('precio');
             $table->integer('aseos');
             $table->boolean('balcon')->default(false);
             $table->boolean('escritorio')->default(false);
             $table->boolean('cuna')->default(false);
+            $table->string('imagen')->nullable();
             $table->foreignId('categoria_id')->constrained('categorias')->onDelete('cascade');
             $table->timestamps();
         });

@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->string('nombre');
             $table->float('precio');
             $table->text('descripcion')->nullable();
+            $table->string('tipo_cobro');
             $table->timestamps();
         });
     }

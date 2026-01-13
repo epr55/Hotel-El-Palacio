@@ -12,28 +12,33 @@ class ServicioSeeder extends Seeder
         $servicios = [
             [
                 'nombre' => 'Desayuno buffet',
-                'descripcion' => '/pers./día',
+                'descripcion' => 'Desayuno variado tipo buffet con opciones calientes y frías servido cada mañana.',
                 'precio' => 15,
+                'tipo_cobro' => 'por_persona_noche',
             ],
             [
                 'nombre' => 'Parking privado',
-                'descripcion' => '/día',
+                'descripcion' => 'Plaza de aparcamiento privada en el hotel con acceso cómodo y seguro durante la estancia.',
                 'precio' => 10,
+                'tipo_cobro' => 'por_noche',
             ],
             [
                 'nombre' => 'Acceso al Spa',
-                'descripcion' => '/sesión/pers.',
+                'descripcion' => 'Acceso a la zona wellness con piscina climatizada, sauna y circuito de relajación.',
                 'precio' => 25,
+                'tipo_cobro' => 'personalizable_por_persona',
             ],
             [
                 'nombre' => 'Traslado al aeropuerto',
-                'descripcion' => '/total (ida y vuelta)',
+                'descripcion' => 'Servicio de traslado privado de ida y vuelta entre el hotel y el aeropuerto.',
                 'precio' => 70,
+                'tipo_cobro' => 'unico',
             ],
             [
                 'nombre' => 'Late check-out',
-                'descripcion' => '/reserva',
+                'descripcion' => 'Salida tardía de la habitación hasta las 15:00, sujeta a disponibilidad.',
                 'precio' => 20,
+                'tipo_cobro' => 'unico',
             ],
         ];
 
@@ -42,3 +47,4 @@ class ServicioSeeder extends Seeder
         }
     }
 }
+

@@ -26,11 +26,14 @@ class HabitacionFactory extends Factory
 
         return [
             'numero' => array_shift($numerosDisponibles),
+            'camas_individual' => $this->faker->numberBetween(1,5),
+            'camas_doble' => $this->faker->numberBetween(1,5),
             'precio' => $this->faker->numberBetween(50, 300),
             'aseos' => $this->faker->numberBetween(1, 3),
             'balcon' => $this->faker->boolean(),
             'escritorio' => $this->faker->boolean(),
             'cuna' => $this->faker->boolean(),
+            'imagen' => $this->faker->imageUrl(),
             'categoria_id' => Categoria::inRandomOrder()->first()->id,
         ];
     }
