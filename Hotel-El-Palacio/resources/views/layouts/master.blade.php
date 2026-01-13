@@ -237,6 +237,39 @@
             box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
         }
 
+        /* Estilos para mensajes de éxito */
+        .alert-success {
+            background-color: #d1e7dd;
+            border: 1px solid #badbcc;
+            color: #0f5132;
+        }
+
+        .alert-info {
+            background-color: #cff4fc;
+            border: 1px solid #b6effb;
+            color: #055160;
+        }
+
+        .flash-message {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
     </style>
 
 </head>
@@ -284,6 +317,31 @@
             </div>
         </div>
     </nav>
+    
+    <!-- Mensajes flash -->
+    @if (session('success'))
+        <div class="flash-message alert alert-success" role="alert">
+            <strong>✓ Éxito!</strong> {{ session('success') }}
+        </div>
+        <script>
+            setTimeout(() => {
+                document.querySelector('.flash-message').style.opacity = '0';
+                setTimeout(() => document.querySelector('.flash-message').remove(), 300);
+            }, 4000);
+        </script>
+    @endif
+
+    @if (session('error'))
+        <div class="flash-message alert alert-danger" role="alert">
+            <strong>✗ Error!</strong> {{ session('error') }}
+        </div>
+        <script>
+            setTimeout(() => {
+                document.querySelector('.flash-message').style.opacity = '0';
+                setTimeout(() => document.querySelector('.flash-message').remove(), 300);
+            }, 4000);
+        </script>
+    @endif
     
     <div class="container">
         @yield('content')

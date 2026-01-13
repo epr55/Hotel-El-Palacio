@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class RegistroController extends Controller
 {
@@ -35,11 +36,11 @@ class RegistroController extends Controller
             'password' => Hash::make($request->password),
             'admin' => false,
             'recepcionista' => false,
-
         ]);
 
-        $user->save();
+        // Login automático después del registro
+        Auth::login($user);
 
-        return redirect()->route('login')->with('success', 'Registro completado. Ahora puedes iniciar sesión.');
+        return redirect()->route('home')->with('success', '¡Bienvenido/a! Tu cuenta ha sido creada exitosamente.');
     }
 }

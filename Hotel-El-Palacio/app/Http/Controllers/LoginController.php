@@ -17,28 +17,24 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'correo' => ['required', 'email'],
-            'password' => ['required'],
-        ], [
-            'correo.required' => 'El email es obligatorio.',
-            'correo.email' => 'Debes proporcionar un email válido.',
-            'password.required' => 'La contraseña es obligatoria.',
-        ]);
+        // Mensaje de error genérico
+        $errorMessage = 'Error al iniciar sesión, correo o contraseña incorrectos.';
+
+        // Validación simple
+        if (empty($request->correo) || empty($request->password)) {
+            return back()->withErrors(['login' => $errorMessage])->onlyInput('correo');
+        }
 
         // Intento de login
         if (Auth::attempt([
-            'correo' => $credentials['correo'],
-            'password' => $credentials['password'],
+            'correo' => $request->correo,
+            'password' => $request->password,
         ])) {
             $request->session()->regenerate();
-
-            return redirect()->route('home');
+            return redirect()->intended(route('home'))->with('success', '¡Bienvenido/a de nuevo!');
         }
 
-        return back()->withErrors([
-            'correo' => 'Las credenciales no son correctas.',
-        ])->onlyInput('correo');
+        return back()->withErrors(['login' => $errorMessage])->onlyInput('correo');
     }
 
     public function logout(Request $request)
@@ -48,7 +44,7 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('home');
+        return redirect()->route('home')->with('success', 'Has cerrado sesión correctamente.');
     }
 
 }

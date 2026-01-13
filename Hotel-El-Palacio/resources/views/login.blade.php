@@ -9,40 +9,27 @@
 
         <h3 class="login-title">Iniciar Sesión</h3>
 
-        <p class="text-muted small text-center mb-3">* Campos obligatorios</p>
-
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <strong>Error al iniciar sesión</strong>
-                <ul class="mb-0 mt-2">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
         <form method="POST" action="{{ route('login.post') }}">
             @csrf
 
-            <label>Email *</label>
+            <label>Email</label>
             <input type="email" name="correo" value="{{ old('correo') }}" 
-                   class="@error('correo') is-invalid @enderror" required>
-            @error('correo')
-                <span class="text-danger small">{{ $message }}</span>
-            @enderror
+                   placeholder="email@address.com">
 
-            <label>Contraseña *</label>
+            <label>Contraseña</label>
             <input type="password" name="password" 
-                   class="@error('password') is-invalid @enderror" required>
-            @error('password')
-                <span class="text-danger small">{{ $message }}</span>
-            @enderror
+                   placeholder="Tu contraseña">
 
-            <a href="#" class="forgot">¿Contraseña olvidada?</a>
+            @if ($errors->any())
+                <div class="text-danger small" style="margin-top: 10px; margin-bottom: 10px;">
+                    <strong>{{ $errors->first() }}</strong>
+                </div>
+            @endif
 
             <button type="submit" class="btn-login-main">Iniciar sesión</button>
-            <button type="button" class="btn-cancel" onclick="window.location.href='{{ route('home') }}'">Cancelar</button>
+            <a href="{{ route('home') }}" style="text-decoration: none;">
+                <button type="button" class="btn-cancel">Cancelar</button>
+            </a>
 
             <p class="register-text">
                 ¿Eres nuevo? <a href="{{ route('registro') }}">Regístrate aquí</a>
