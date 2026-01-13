@@ -11,7 +11,7 @@ class Categoria extends Model
     protected $table = 'categorias';
     protected $primaryKey = 'id';
     public $timestamps = false;
-    protected $fillable = ['id','nombre','capacidad','descripcion'];
+    protected $fillable = ['id','nombre','capacidad','descripcion','camas'];
 
     public function habitaciones()
     {

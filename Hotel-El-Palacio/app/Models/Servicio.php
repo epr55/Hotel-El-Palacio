@@ -11,7 +11,7 @@ class Servicio extends Model
     protected $table = 'servicios';
     protected $primaryKey = 'id';
     public $timestamps = false;
-    protected $fillable = ['id','nombre','precio','descripcion'];
+    protected $fillable = ['id','nombre','precio','descripcion','tipo_cobro'];
 
     public function reservas()
     {

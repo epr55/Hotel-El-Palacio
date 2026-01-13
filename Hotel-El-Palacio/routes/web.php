@@ -5,6 +5,7 @@
     use App\Http\Controllers\LoginController;
     use App\Http\Controllers\PerfilController;
     use App\Http\Controllers\BusquedaController;
+    use App\Http\Controllers\ReservaController;
 
     Route::get('/', function () {
         return view('inicio');
@@ -26,6 +27,9 @@
 
     //Ruta para el buscador
     Route::get('/busqueda', [BusquedaController::class, 'index'])->name('busqueda');
+
+    //Ruta para completar reserva
+    Route::get('/reserva/completar/{habitacion}', [ReservaController::class, 'completar'])->name('reserva.completar');
 
     Route::middleware(['auth'])->group(function () {
     

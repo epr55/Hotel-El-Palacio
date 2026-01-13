@@ -81,7 +81,7 @@
                     </div>
                     
                     <div style="display: flex; align-items: center; gap: 8px; color: #666; font-family: 'Mozilla Headline', sans-serif; font-weight: bold; font-size: 0.95rem;">
-                        <span style="font-size: 1rem;">🛏️</span> 1 cama
+                        <span style="font-size: 1rem;">🛌️</span> {{ $hab->camas ?? 1 }} {{ ($hab->camas ?? 1) == 1 ? 'cama' : 'camas' }}
                     </div>
 
                     <div style="font-family: 'Mozilla Headline', sans-serif; font-weight: bold; color: #666; font-size: 1.1rem; margin-top: 5px;">
@@ -90,7 +90,7 @@
                 </div>
 
                 <div style="padding: 15px 25px; display: flex; flex-direction: column; justify-content: center; gap: 10px;">
-                    <a href="javascript:void(0)" style="
+                    <a href="{{ route('reserva.completar', ['habitacion' => $hab->id, 'checkin' => $checkin, 'checkout' => $checkout, 'huespedes' => $huespedes ?? 2]) }}" style="
                         background-color: #E64A19; 
                         color: white; 
                         text-align: center; 
@@ -104,7 +104,7 @@
                     ">
                         Ver detalles
                     </a>
-                    <a href="javascript:void(0)" style="
+                    <a href="{{ route('reserva.completar', ['habitacion' => $hab->id, 'checkin' => $checkin, 'checkout' => $checkout, 'huespedes' => $huespedes ?? 2]) }}" style="
                         background-color: #E64A19; 
                         color: white; 
                         text-align: center; 

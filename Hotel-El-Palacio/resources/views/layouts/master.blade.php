@@ -270,6 +270,184 @@
             }
         }
 
+        /* Estilos para página de completar reserva */
+        .reserva-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .reserva-title {
+            font-family: 'Mozilla Headline', sans-serif;
+            font-size: 2rem;
+            color: #1A1A1A;
+            margin-bottom: 30px;
+        }
+
+        .reserva-layout {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 30px;
+        }
+
+        .card-white {
+            background: #FFFFFF;
+            border: 1.5px solid #BDC1C7;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1A1A1A;
+            margin-bottom: 20px;
+        }
+
+        .habitacion-detalle {
+            display: flex;
+            gap: 20px;
+        }
+
+        .habitacion-img {
+            width: 150px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .habitacion-img-placeholder {
+            width: 150px;
+            height: 120px;
+            background: linear-gradient(135deg, #DF9E2D 0%, #E15218 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .habitacion-info h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1A1A1A;
+            margin-bottom: 10px;
+        }
+
+        .habitacion-info p {
+            margin: 5px 0;
+            color: #4A4A4A;
+            font-size: 0.95rem;
+        }
+
+        /* Estilos para servicios */
+        .servicio-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .servicio-item:hover {
+            background-color: #F5F5F5;
+        }
+
+        .servicio-checkbox {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: #E15218;
+        }
+
+        .servicio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            flex: 1;
+            font-size: 0.95rem;
+        }
+
+        .servicio-icono {
+            font-size: 1.2rem;
+        }
+
+        .servicio-nombre {
+            font-weight: 500;
+            color: #1A1A1A;
+        }
+
+        .servicio-precio {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Desglose de precio */
+        .precio-card {
+            position: sticky;
+            top: 100px;
+        }
+
+        .precio-linea {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            color: #4A4A4A;
+        }
+
+        .precio-divider {
+            border: none;
+            border-top: 1px solid #E0E0E0;
+            margin: 16px 0;
+        }
+
+        .total-servicios {
+            font-weight: 600;
+            color: #1A1A1A;
+        }
+
+        .precio-total {
+            font-size: 1.25rem;
+            color: #1A1A1A;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 2px solid #DF9E2D;
+        }
+
+        .btn-confirmar {
+            width: 100%;
+            background: #E15218;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 14px;
+            margin-top: 20px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-confirmar:hover {
+            background: #DC4C18;
+        }
+
+        @media (max-width: 768px) {
+            .reserva-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .precio-card {
+                position: static;
+            }
+        }
+
     </style>
 
 </head>
