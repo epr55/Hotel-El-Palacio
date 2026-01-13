@@ -60,9 +60,13 @@
                 height: 170px; /* Altura reducida para que sea más estrecha */
             ">
                 <div style="width: 240px; min-width: 240px; background-color: #f0f0f0; border-right: 1px solid #eee;">
-                    <div style="height: 100%; display: flex; align-items: center; justify-content: center; color: #ccc;">
-                        <span style="font-size: 2.5rem;">🏨</span>
-                    </div>
+                    @if($hab->imagen)
+                        <img src="{{ $hab->imagen }}" alt="Habitación {{ $hab->numero }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    @else
+                        <div style="height: 100%; display: flex; align-items: center; justify-content: center; color: #ccc;">
+                            <span style="font-size: 2.5rem;">🏨</span>
+                        </div>
+                    @endif
                 </div>
 
                 <div style="padding: 15px 25px; flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 2px;">
@@ -82,6 +86,13 @@
                     
                     <div style="display: flex; align-items: center; gap: 8px; color: #666; font-family: 'Mozilla Headline', sans-serif; font-weight: bold; font-size: 0.95rem;">
                         <span style="font-size: 1rem;">🛌️</span> {{ $hab->camas ?? 1 }} {{ ($hab->camas ?? 1) == 1 ? 'cama' : 'camas' }}
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 12px; color: #999; font-family: 'Mozilla Headline', sans-serif; font-size: 0.85rem; margin-top: 3px;">
+                        <span>🚿 {{ $hab->aseos }} {{ $hab->aseos == 1 ? 'aseo' : 'aseos' }}</span>
+                        @if($hab->balcon)<span>🌅 Balcón</span>@endif
+                        @if($hab->escritorio)<span>💼 Zona de trabajo</span>@endif
+                        @if($hab->cuna)<span>👶 Cuna disponible</span>@endif
                     </div>
 
                     <div style="font-family: 'Mozilla Headline', sans-serif; font-weight: bold; color: #666; font-size: 1.1rem; margin-top: 5px;">

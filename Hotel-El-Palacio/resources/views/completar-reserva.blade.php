@@ -17,7 +17,11 @@
                 
                 <div class="habitacion-detalle">
                     <div class="habitacion-img-placeholder">
-                        <span style="font-size: 4rem;">🏨</span>
+                        @if($habitacion->imagen)
+                            <img src="{{ $habitacion->imagen }}" alt="Habitación {{ $habitacion->numero }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+                        @else
+                            <span style="font-size: 4rem;">🏨</span>
+                        @endif
                     </div>
                     
                     <div class="habitacion-info">
@@ -25,6 +29,17 @@
                         <p><strong>Check-in:</strong> {{ \Carbon\Carbon::parse($checkin)->format('d/m/Y') }}</p>
                         <p><strong>Check-out:</strong> {{ \Carbon\Carbon::parse($checkout)->format('d/m/Y') }}</p>
                         <p><strong>Huéspedes:</strong> {{ $huespedes }} personas</p>
+                        <p><strong>Camas:</strong> {{ $habitacion->camas ?? 1 }} {{ ($habitacion->camas ?? 1) == 1 ? 'cama' : 'camas' }}</p>
+                        <p><strong>Aseos:</strong> {{ $habitacion->aseos ?? 1 }}</p>
+                        @if($habitacion->balcon)
+                            <p>🌅 <strong>Balcón</strong></p>
+                        @endif
+                        @if($habitacion->escritorio)
+                            <p>💼 <strong>Zona de trabajo</strong></p>
+                        @endif
+                        @if($habitacion->cuna)
+                            <p>👶 <strong>Cuna disponible</strong></p>
+                        @endif
                         <p><strong>Precio base:</strong> {{ $habitacion->precio }}€/noche ({{ $noches }} noches)</p>
                     </div>
                 </div>
