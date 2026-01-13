@@ -20,6 +20,10 @@ class LoginController extends Controller
         $credentials = $request->validate([
             'correo' => ['required', 'email'],
             'password' => ['required'],
+        ], [
+            'correo.required' => 'El email es obligatorio.',
+            'correo.email' => 'Debes proporcionar un email válido.',
+            'password.required' => 'La contraseña es obligatoria.',
         ]);
 
         // Intento de login

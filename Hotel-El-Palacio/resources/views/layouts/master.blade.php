@@ -197,6 +197,46 @@
             color: #fff;
         }
 
+        /* Estilos para errores de validación */
+        .alert {
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border: 1px solid #f5c2c7;
+            color: #842029;
+        }
+
+        .alert ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .text-danger {
+            color: #dc3545;
+            display: block;
+            margin-top: -6px;
+            margin-bottom: 8px;
+        }
+
+        .small {
+            font-size: 12px;
+        }
+
+        input.is-invalid {
+            border-color: #dc3545 !important;
+            background-color: #fff5f5;
+        }
+
+        input.is-invalid:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+        }
+
     </style>
 
 </head>

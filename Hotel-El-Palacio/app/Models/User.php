@@ -14,6 +14,12 @@ class User extends Authenticatable
     protected $primaryKey = 'id';
     public $timestamps = true;
 
+    // Indicar que el campo de autenticación es 'correo' en lugar de 'email'
+    public function getAuthIdentifierName()
+    {
+        return 'correo';
+    }
+
     protected $fillable = [
         'name',
         'correo',
