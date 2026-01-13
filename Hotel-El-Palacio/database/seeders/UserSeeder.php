@@ -4,24 +4,28 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Admin
+        $password = Hash::make('123456');
+
         User::factory()->admin()->create([
             'name' => 'Administrador',
             'correo' => 'admin@hotel.com',
+            'password' => $password,
         ]);
 
-        // Recepcionista
         User::factory()->recepcionista()->create([
             'name' => 'Recepcion',
             'correo' => 'recepcion@hotel.com',
+            'password' => $password,
         ]);
 
-        // Usuarios normales
-        User::factory()->count(10)->create();
+        User::factory()->count(10)->create([
+            'password' => $password,
+        ]);
     }
 }
