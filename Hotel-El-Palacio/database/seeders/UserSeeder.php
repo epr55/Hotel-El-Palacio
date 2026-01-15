@@ -14,13 +14,19 @@ class UserSeeder extends Seeder
 
         User::factory()->admin()->create([
             'name' => 'Administrador',
-            'correo' => 'admin@hotel.com',
+            'correo' => 'admin@example.com',
             'password' => $password,
         ]);
 
         User::factory()->recepcionista()->create([
             'name' => 'Recepcion',
-            'correo' => 'recepcion@hotel.com',
+            'correo' => 'recepcion@example.com',
+            'password' => $password,
+        ]);
+
+        User::factory()->recepcionista()->create([
+            'name' => 'Usuario',
+            'correo' => 'usuario@example.com',
             'password' => $password,
         ]);
 

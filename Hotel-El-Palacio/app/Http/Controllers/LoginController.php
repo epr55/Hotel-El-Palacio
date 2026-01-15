@@ -17,24 +17,21 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        // Mensaje de error genérico
         $errorMessage = 'Error al iniciar sesión, correo o contraseña incorrectos.';
 
-        // Validación simple
         if (empty($request->correo) || empty($request->password)) {
             return back()->withErrors(['login' => $errorMessage])->onlyInput('correo');
         }
 
-        // Intento de login
-        if (Auth::attempt([
-            'correo' => $request->correo,
-            'password' => $request->password,
-        ])) {
-            $request->session()->regenerate();
-            return redirect()->intended(route('home'))->with('success', '¡Bienvenido/a de nuevo!');
+        $user = User::where('correo', $request->correo)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return back()->withErrors(['login' => $errorMessage])->onlyInput('correo');
         }
 
-        return back()->withErrors(['login' => $errorMessage])->onlyInput('correo');
+        Auth::login($user);
+        $request->session()->regenerate();
+        return redirect()->route('home')->with('success', '¡Bienvenido/a de nuevo!');
     }
 
     public function logout(Request $request)
