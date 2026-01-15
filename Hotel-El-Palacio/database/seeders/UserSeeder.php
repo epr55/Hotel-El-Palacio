@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
             'password' => $password,
         ]);
 
-        User::factory()->recepcionista()->create([
+        User::factory()->create([
             'name' => 'Usuario',
             'correo' => 'usuario@example.com',
             'password' => $password,
