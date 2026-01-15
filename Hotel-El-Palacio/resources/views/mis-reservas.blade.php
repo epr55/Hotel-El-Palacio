@@ -79,15 +79,20 @@
                             Ver detalles de la estancia
                         </a>
                     @else
-                        <a href="javascript:void(0)" style="flex: 2; background-color: #E64A19; color: white; text-align: center; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-family: Helvetica, sans-serif;">
+                        <a href="{{ route('reserva.completar', ['habitacion' => $reserva->habitacion_id, 'reserva_id' => $reserva->id]) }}" 
+                            style="flex: 2; background-color: #E64A19; color: white; text-align: center; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-family: Helvetica, sans-serif;">
                             Ver detalles
                         </a>
-                        <a href="javascript:void(0)" style="flex: 0.6; border: 1px solid #BDC1C7; color: #333; text-align: center; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-family: Helvetica; background: #F5F5F5;">
+                        <a href="{{ route('reserva.completar', ['habitacion' => $reserva->habitacion_id, 'reserva_id' => $reserva->id]) }}" 
+                            style="flex: 0.6; border: 1px solid #BDC1C7; color: #333; text-align: center; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-family: Helvetica; background: #F5F5F5;">
                             Modificar
                         </a>
-                        <a href="javascript:void(0)" style="flex: 0.6; border: 1px solid #ff4d4d; color: #ff4d4d; text-align: center; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-family: Helvetica; background: white;">
-                            Cancelar
-                        </a>
+                        <form action="{{ route('reservas.cancelar', $reserva->id) }}" method="POST" style="flex: 0.6; display: flex;">
+                            @csrf
+                            <button type="submit" style="width: 100%; border: 1px solid #ff4d4d; color: #ff4d4d; text-align: center; padding: 10px; border-radius: 8px; font-weight: bold; font-family: Helvetica; background: white; cursor: pointer;">
+                                Cancelar
+                            </button>
+                        </form>
                     @endif
 
                 </div>

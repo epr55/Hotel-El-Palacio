@@ -13,9 +13,13 @@ class ReservaServicioSeeder extends Seeder
         $servicios = Servicio::all();
 
         Reserva::all()->each(function ($reserva) use ($servicios) {
-            $reserva->servicios()->attach(
-                $servicios->random(rand(1, 3))->pluck('id')->toArray()
-            );
+            $seleccionados = $servicios->random(rand(1, 3));
+
+            $datosPivot = $seleccionados->mapWithKeys(function ($servicio) {
+                return [$servicio->id => ['cantidad_personas' => 2]];
+            });
+
+            $reserva->servicios()->attach($datosPivot->toArray());
         });
     }
 }

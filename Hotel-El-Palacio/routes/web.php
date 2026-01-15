@@ -51,6 +51,9 @@
 
         //Ruta para la página de mis reservas
         Route::get('/mis-reservas', [MisReservasController::class, 'index'])->name('reservas.usuario');
+
+        //Ruta para cancelar una reserva
+        Route::post('/reservas/{id}/cancelar', [ReservaController::class, 'cancelar'])->name('reservas.cancelar');
     });
     
     // Página de confirmación del pago (no requiere auth porque viene del TPV)

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use App\Models\Reserva;
+use Illuminate\Support\Facades\Auth;
 
 class PagoController extends Controller
 {
@@ -20,6 +22,7 @@ class PagoController extends Controller
         Log::info('Iniciando proceso de pago', ['user' => auth()->user()->correo ?? auth()->id()]);
         
         $request->validate([
+            'reserva_id' => 'nullable|integer',
             'importe' => 'required|numeric|min:0',
             'habitacion_id' => 'required|integer',
             'checkin' => 'required|date',
@@ -66,6 +69,7 @@ class PagoController extends Controller
                 // Guardar los datos de la reserva en sesión para procesar después del pago
                 session([
                     'reserva_pendiente' => [
+                        'reserva_id' => $request->input('reserva_id'),
                         'habitacion_id' => $request->input('habitacion_id'),
                         'checkin' => $request->input('checkin'),
                         'checkout' => $request->input('checkout'),
@@ -144,7 +148,39 @@ class PagoController extends Controller
                 // Verificar el estado del pago
                 if ($data['status'] === 'COMPLETED') {
                     // Pago exitoso - Crear la reserva en la base de datos
-                    // TODO: Implementar la creación de la reserva
+                    if (!empty($reservaPendiente['reserva_id'])) {
+                        $reserva = Reserva::find($reservaPendiente['reserva_id']);
+                        if ($reserva) {
+                            $reserva->update([
+                                'fecha_inicio' => $reservaPendiente['checkin'],
+                                'fecha_final' => $reservaPendiente['checkout'],
+                                'precio_total' => $reservaPendiente['importe'],
+                                'estado' => 'confirmada'
+                            ]);
+                        }
+                    } else {
+                        $reserva = Reserva::create([
+                            'user_id' => Auth::id(),
+                            'habitacion_id' => $reservaPendiente['habitacion_id'],
+                            'fecha_inicio' => $reservaPendiente['checkin'],
+                            'fecha_final' => $reservaPendiente['checkout'],
+                            'precio_total' => $reservaPendiente['importe'],
+                            'estado' => 'confirmada',
+                            'temporada_id' => 1
+                        ]);
+                    }
+
+                    // Guardar los Servicios Extra
+                    if ($reserva && !empty($reservaPendiente['servicios'])) {
+                        $datosSync = [];
+                        
+                        foreach ($reservaPendiente['servicios'] as $s) {
+                            $datosSync[$s['id']] = ['cantidad_personas' => $s['cantidad']];
+                        }
+                        
+                        // Ahora sync guardará el ID del servicio Y la cantidad
+                        $reserva->servicios()->sync($datosSync);
+                    }
                     
                     session()->forget('reserva_pendiente');
                     
