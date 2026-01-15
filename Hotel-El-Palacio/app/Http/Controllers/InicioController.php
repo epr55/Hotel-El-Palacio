@@ -17,42 +17,60 @@ class InicioController extends Controller
         }
 
         $user = Auth::user();
-
-        if ($user->admin) {
+        if ($user->admin == true) {
             return view('admin.inicio_admin');
         }
-
-        else if ($user->recepcionista) {
+        else if ($user->recepcionista == true) {
             return view('recepcionista.inicio_recepcionista');
         }
-
         return view('inicio');
     }
 
     public function tablaUsuarios()
     {
-        $users = User::orderBy('id')->paginate(10);
-
-        return view('admin.tabla_usuario', compact('users'));
+        $user = Auth::user();
+        if ($user->admin == true) {
+            $users = User::orderBy('id')->paginate(10);
+            return view('admin.tabla_usuario', compact('users'));
+        }
+        else {
+            return redirect()->route('home');
+        }
     }
 
     public function tablaReservas()
     {
-        $reservas = Reserva::orderBy('id')->paginate(10);
-
-        return view('admin.tabla_reserva', compact('reservas'));
+        $user = Auth::user();
+        if ($user->admin == true) {
+            $reservas = Reserva::orderBy('id')->paginate(10);
+            return view('admin.tabla_reserva', compact('reservas'));
+        }
+        else {
+            return redirect()->route('home');
+        }
     }
 
     public function tablaComentarios()
     {
-        $comentarios = Comentario::with('usuario')->orderBy('id')->paginate(10);
-
-        return view('admin.tabla_comentario', compact('comentarios'));
+        $user = Auth::user();
+        if ($user->admin == true) {
+            $comentarios = Comentario::with('usuario')->orderBy('id')->paginate(10);
+            return view('admin.tabla_comentario', compact('comentarios'));
+        }
+        else {
+            return redirect()->route('home');
+        }
     }
 
     public function tablaHabitaciones()
     {
-        $habitaciones = Habitacion::with('categoria')->orderBy('id')->paginate(10);
-        return view('admin.tabla_habitacion', compact('habitaciones'));
+        $user = Auth::user();
+        if ($user->admin == true) {
+            $habitaciones = Habitacion::with('categoria')->orderBy('id')->paginate(10);
+            return view('admin.tabla_habitacion', compact('habitaciones'));
+        }
+        else {
+            return redirect()->route('home');
+        }
     }
 }

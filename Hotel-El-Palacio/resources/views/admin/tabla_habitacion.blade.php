@@ -241,7 +241,7 @@
                         </td>
                         <td>{{ $habitacion->numero }}</td>
                         <td>{{ $nombre ?? '—' }}</td>
-                        <td>{{ number_format($habitacion->precio, 2) }}€</td>
+                        <td>{{ number_format($habitacion->precio, 1) }}€</td>
                         <td>{{ $habitacion->camas_individual }}</td>
                         <td>{{ $habitacion->camas_doble }}</td>
                         <td>{{ $habitacion->aseos ? 'Sí' : 'No' }}</td>

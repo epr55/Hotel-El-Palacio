@@ -29,18 +29,20 @@
     Route::get('/busqueda', [BusquedaController::class, 'index'])->name('busqueda');
 
     //Ruta para completar reserva (requiere autenticación)
-    Route::get('/reserva/completar/{habitacion}', [ReservaController::class, 'completar'])
-        ->middleware('auth')
-        ->name('reserva.completar');
+    Route::get('/reserva/completar/{habitacion}', [ReservaController::class, 'completar'])->middleware('auth')->name('reserva.completar');
 
+    //Rutas middleware
     Route::middleware(['auth'])->group(function () {
-    
         // Ver el perfil
-        Route::get('/perfil', function () { 
-            return view('perfil'); 
-        })->name('perfil');
+        Route::get('/perfil', function () { return view('perfil'); })->name('perfil');
 
-        // Actualizar el perfil (Esta es la que faltaba)
+        //Rutas administracion
+        Route::get('/admin/usuarios', [InicioController::class, 'tablaUsuarios'])->name('admin.usuarios');
+        Route::get('/admin/habitaciones', [InicioController::class, 'tablaHabitaciones'])->name('admin.habitaciones');
+        Route::get('/admin/reservas', [InicioController::class, 'tablaReservas'])->name('admin.reservas');
+        Route::get('/admin/comentarios', [InicioController::class, 'tablaComentarios'])->name('admin.comentarios');
+
+        // Actualizar el perfil
         Route::put('/perfil/actualizar', [PerfilController::class, 'update'])->name('perfil.update');
         
         // Iniciar proceso de pago
@@ -50,17 +52,5 @@
     // Página de confirmación del pago (no requiere auth porque viene del TPV)
     Route::get('/pago/confirmado', [PagoController::class, 'pagoConfirmado'])->name('pago.confirmado');
 
-    Route::middleware(['auth'])->prefix('admin')->group(function () {
-
-        Route::get('/admin/usuarios', [InicioController::class, 'tablaUsuarios'])->name('admin.usuarios');
-
-        Route::get('/admin/habitaciones', [InicioController::class, 'tablaHabitaciones'])->name('admin.habitaciones');
-
-        Route::get('/admin/reservas', [InicioController::class, 'tablaReservas'])->name('admin.reservas');
-
-        Route::get('/admin/comentarios', [InicioController::class, 'tablaComentarios'])->name('admin.comentarios');
-    });
-
-    Route::fallback(function () {
-        return redirect()->route('home');
-    });
+    //Rutas no existentes
+    Route::fallback(function () {return redirect()->route('home');});

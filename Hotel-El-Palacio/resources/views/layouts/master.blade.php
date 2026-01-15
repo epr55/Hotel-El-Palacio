@@ -387,7 +387,6 @@
             font-size: 0.9rem;
         }
 
-        /* Desglose de precio */
         .precio-card {
             position: sticky;
             top: 100px;
@@ -448,6 +447,131 @@
             }
         }
 
+        footer {
+            background-color: #1A1A1A;
+            color: #E5E5E5;
+            padding: 50px 0 20px;
+            font-size: 0.9rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            justify-items: center;
+            text-align: center;
+        }
+
+        .footer-title {
+            font-family: 'Mozilla Headline', sans-serif;
+            font-size: 1.1rem;
+            color: #D39D55;
+            margin-bottom: 15px;
+        }
+
+        .footer-text {
+            margin-bottom: 8px;
+            color: #CCCCCC;
+            line-height: 1.5;
+        }
+
+        .footer-text:hover {
+            color: #FFFFFF;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links a {
+            color: #D4AF37;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #FFFFFF;
+        }
+
+        .footer-socials {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .footer-socials a {
+            color: #CCCCCC;
+            text-decoration: none;
+        }
+
+
+        .footer-socials a:hover {
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        .footer-bottom {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #333;
+            text-align: center;
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        footer .footer-text,
+        footer .footer-socials a {
+            position: relative;
+            cursor: pointer;
+            
+        }
+
+        footer .footer-text::after,
+        footer .footer-socials a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 100%;
+            height: 2px;
+            background-color: currentColor;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.25s ease;
+            
+        }
+
+        footer .footer-text:hover::after,
+        footer .footer-socials a:hover::after {
+            transform: scaleX(1);
+            
+        }
+
+        @media (max-width: 768px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-socials {
+                align-items: center;
+            }
+        }
+
     </style>
 
 </head>
@@ -496,7 +620,6 @@
         </div>
     </nav>
     
-    <!-- Mensajes flash -->
     @if (session('success'))
         <div class="flash-message alert alert-success" role="alert">
             <strong>✓ Éxito!</strong> {{ session('success') }}
@@ -526,9 +649,37 @@
     </div>
 
     <footer>
-        <div class="container">
-            
+        <div class="container footer-grid">
+
+            <div class="footer-col">
+                <h5 class="footer-title">Ayuda</h5>
+                <p class="footer-text">Política de Privacidad</p>
+                <p class="footer-text">Términos y condiciones</p>
+                <p class="footer-text">Trabaja con nosotros</p>
+            </div>
+
+            <div class="footer-col">
+                <h5 class="footer-title">Contacto</h5>
+                <p class="footer-text">Calle Palacio 12, Madrid</p>
+                <p class="footer-text">+34 912 345 678</p>
+                <p class="footer-text">info@hotelelpacio.com</p>
+            </div>
+
+            <div class="footer-col">
+                <h5 class="footer-title">Síguenos</h5>
+                <div class="footer-socials">
+                    <a href="https://facebook.com" target="_blank">Facebook</a>
+                    <a href="https://instagram.com" target="_blank">Instagram</a>
+                    <a href="https://twitter.com" target="_blank">Twitter</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            © {{ date('Y') }} Hotel El Palacio · Todos los derechos reservados
         </div>
     </footer>
+
 </body>
 </html>

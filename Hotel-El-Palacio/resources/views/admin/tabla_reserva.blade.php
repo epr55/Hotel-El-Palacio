@@ -185,6 +185,24 @@
         color: #92400e;
         border: 1px solid #fde68a;
     }
+
+    .servicios-lista {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: center;
+    }
+
+    .servicio-badge {
+        background-color: #eef2ff;
+        color: #3730a3;
+        border: 1px solid #c7d2fe;
+        border-radius: 10px;
+        padding: 4px 8px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
 </style>
 
 <div class="table-wrapper">
@@ -221,18 +239,23 @@
                             <span class="estado-badge 
                                 {{ $reserva->estado === 'confirmada' ? 'estado-confirmada' : '' }}
                                 {{ $reserva->estado === 'cancelada' ? 'estado-cancelada' : '' }}
-                                {{ $reserva->estado === 'pendiente' ? 'estado-pendiente' : '' }}
-                            ">
+                                {{ $reserva->estado === 'pendiente' ? 'estado-pendiente' : '' }}">
                                 {{ $reserva->estado }}
                             </span>
                         </td>
                         <td>{{ \Carbon\Carbon::parse($reserva->fecha_inicio)->format('d/m/Y') }}</td>
                         <td>{{ \Carbon\Carbon::parse($reserva->fecha_final)->format('d/m/Y') }}</td>
-                        <td>{{ number_format($reserva->precio_total, 2) }} €</td>
+                        <td>{{ number_format($reserva->precio_total, 1) }}€</td>
                         <td>{{ $reserva->temporada->nombre ?? '—' }}</td>
                         <td>
                             @if ($reserva->servicios->count())
-                                {{ $reserva->servicios->pluck('nombre')->join(', ') }}
+                                <div class="servicios-lista">
+                                    @foreach ($reserva->servicios as $servicio)
+                                        <span class="servicio-badge">
+                                            {{ $servicio->nombre }}
+                                        </span>
+                                    @endforeach
+                                </div>
                             @else
                                 —
                             @endif
