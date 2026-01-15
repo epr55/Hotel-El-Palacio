@@ -12,8 +12,6 @@ class ComentarioSeeder extends Seeder
     {
         $usuarios = User::all();
 
-        Comentario::factory()->count(20)->create([
-            'user_id' => $usuarios->random()->id,
-        ]);
+        Comentario::factory()->count(20)->create([]);
     }
 }

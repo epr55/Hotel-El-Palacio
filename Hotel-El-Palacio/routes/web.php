@@ -1,4 +1,4 @@
-    <?php
+<?php
 
     use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\RegistroController;
@@ -6,10 +6,9 @@
     use App\Http\Controllers\PerfilController;
     use App\Http\Controllers\BusquedaController;
     use App\Http\Controllers\ReservaController;
+    use App\Http\Controllers\InicioController;
 
-    Route::get('/', function () {
-        return view('inicio');
-    })->name('home');
+    Route::get('/', [InicioController::class, 'home'])->name('home');
 
     Route::get('/login', [LoginController::class, 'show'])->name('login');
 
@@ -41,4 +40,19 @@
         // Actualizar el perfil (Esta es la que faltaba)
         Route::put('/perfil/actualizar', [PerfilController::class, 'update'])->name('perfil.update');
         
+    });
+
+    Route::middleware(['auth'])->prefix('admin')->group(function () {
+
+        Route::get('/admin/usuarios', [InicioController::class, 'tablaUsuarios'])->name('admin.usuarios');
+
+        Route::get('/admin/habitaciones', [InicioController::class, 'tablaHabitaciones'])->name('admin.habitaciones');
+
+        Route::get('/admin/reservas', [InicioController::class, 'tablaReservas'])->name('admin.reservas');
+
+        Route::get('/admin/comentarios', [InicioController::class, 'tablaComentarios'])->name('admin.comentarios');
+    });
+
+    Route::fallback(function () {
+        return redirect()->route('home');
     });

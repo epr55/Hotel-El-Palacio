@@ -11,7 +11,7 @@ class Habitacion extends Model
     protected $table = "habitaciones";
     protected $primaryKey = 'id';
     public $timestamps = false;
-    protected $fillable = ['id','numero','precio','aseos','balcon','escritorio','cuna','categoria_id','camas'];
+    protected $fillable = ['id','numero','camas_individual','camas_doble','precio','aseos','balcon','escritorio','cuna','imagen','categoria_id'];
 
     public function categoria()
     {
