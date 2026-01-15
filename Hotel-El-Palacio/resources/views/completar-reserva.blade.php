@@ -299,14 +299,30 @@
                     <strong id="total-pagar">{{ $precioBase }}€</strong>
                 </div>
 
-                <button class="btn-confirmar" type="button">
-                    Confirmar Reserva y Pagar
-                </button>
+                <form id="payment-form" method="POST" action="{{ route('pago.init') }}">
+                    @csrf
+                    <input type="hidden" name="importe" id="importe-hidden" value="{{ $precioBase }}">
+                    <input type="hidden" name="habitacion_id" value="{{ $habitacion->id }}">
+                    <input type="hidden" name="checkin" value="{{ $checkin }}">
+                    <input type="hidden" name="checkout" value="{{ $checkout }}">
+                    <input type="hidden" name="huespedes" value="{{ $huespedes }}">
+                    <input type="hidden" name="servicios" id="servicios-hidden" value="[]">
+                    
+                    <button class="btn-confirmar" type="submit">
+                        Confirmar Reserva y Pagar
+                    </button>
+                </form>
             </div>
         </div>
 
     </div>
 </div>
+
+@if(session('error'))
+    <div class="alert alert-danger" style="margin: 20px auto; max-width: 1200px;">
+        {{ session('error') }}
+    </div>
+@endif
 
 <div id="reserva-data"
      data-precio-base="{{ $precioBase }}"
@@ -408,7 +424,33 @@
             serviciosDiv.innerHTML = serviciosHTML;
             totalServiciosSpan.textContent = totalServicios + '€';
             totalPagarSpan.textContent = (precioBase + totalServicios) + '€';
+            
+            // Actualizar el importe oculto del formulario
+            document.getElementById('importe-hidden').value = precioBase + totalServicios;
+            
+            // Actualizar los servicios seleccionados para enviar al backend
+            const serviciosSeleccionados = [];
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    const cantidadInput = document.getElementById('cantidad-' + checkbox.value);
+                    serviciosSeleccionados.push({
+                        id: checkbox.value,
+                        nombre: checkbox.dataset.nombre,
+                        cantidad: cantidadInput ? parseInt(cantidadInput.value) || 1 : 1
+                    });
+                }
+            });
+            document.getElementById('servicios-hidden').value = JSON.stringify(serviciosSeleccionados);
         }
+        
+        // Inicializar valores al cargar
+        actualizarPrecios();
+        
+        // Debug: Ver qué se envía al hacer submit
+        document.getElementById('payment-form').addEventListener('submit', function(e) {
+            console.log('Importe:', document.getElementById('importe-hidden').value);
+            console.log('Servicios:', document.getElementById('servicios-hidden').value);
+        });
     });
 </script>
 @endsection
