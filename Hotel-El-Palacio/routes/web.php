@@ -8,6 +8,7 @@
     use App\Http\Controllers\ReservaController;
     use App\Http\Controllers\PagoController;
     use App\Http\Controllers\InicioController;
+    use App\Http\Controllers\MisReservasController;
 
     Route::get('/', [InicioController::class, 'home'])->name('home');
 
@@ -47,6 +48,9 @@
         
         // Iniciar proceso de pago
         Route::post('/pago/init', [PagoController::class, 'initPayment'])->name('pago.init');
+
+        //Ruta para la página de mis reservas
+        Route::get('/mis-reservas', [MisReservasController::class, 'index'])->name('reservas.usuario');
     });
     
     // Página de confirmación del pago (no requiere auth porque viene del TPV)

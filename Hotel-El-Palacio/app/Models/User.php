@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Reserva;
 
 class User extends Authenticatable
 {
@@ -32,4 +33,9 @@ class User extends Authenticatable
         'admin' => 'boolean',
         'recepcionista' => 'boolean',
     ];
+
+    public function reservas()
+    {
+        return $this->hasMany(Reserva::class, 'user_id', 'id');
+    }
 }
