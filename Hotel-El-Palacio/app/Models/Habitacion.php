@@ -11,7 +11,22 @@ class Habitacion extends Model
     protected $table = "habitaciones";
     protected $primaryKey = 'id';
     public $timestamps = false;
-    protected $fillable = ['id','numero','camas_individual','camas_doble','precio','aseos','balcon','escritorio','cuna','imagen','categoria_id'];
+    protected $fillable = ['id','numero','estado','camas_individual','camas_doble','precio','aseos','balcon','escritorio','cuna','imagen','categoria_id'];
+
+    public function getPlantaAttribute()
+    {
+        return floor($this->numero / 100);
+    }
+
+    public function getColorEstadoAttribute()
+    {
+        return match($this->estado) {
+            'disponible' => '#d4edda',
+            'mantenimiento' => '#fff3cd',
+            'ocupada' => '#f8d7da',
+            default => '#eee'
+        };
+    }
 
     public function categoria()
     {

@@ -10,6 +10,16 @@ class MantenimientoSeeder extends Seeder
 {
     public function run(): void
     {
-        Mantenimiento::factory()->count(15)->create([]);
+        $mantenimientos = Mantenimiento::factory()->count(15)->create();
+
+        foreach ($mantenimientos as $mantenimiento) {
+            
+            if (is_null($mantenimiento->fecha_final) || $mantenimiento->fecha_final >= now()->format('Y-m-d')) {
+                
+                Habitacion::where('id', $mantenimiento->habitacion_id)->update([
+                    'estado' => 'mantenimiento'
+                ]);
+            }
+        }
     }
 }

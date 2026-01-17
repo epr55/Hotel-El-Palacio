@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Habitacion;
 use App\Models\Temporada;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Carbon\Carbon;
 
 class ReservaFactory extends Factory
 {
@@ -14,17 +15,20 @@ class ReservaFactory extends Factory
 
     public function definition(): array
     {
-        $inicio = $this->faker->dateTimeBetween('-1 month', '+1 month');
-        $final = (clone $inicio)->modify('+'.rand(1,7).' days');
+        $fechaFaker = $this->faker->dateTimeBetween('-1 month', '+1 month');
+        
+        $inicio = Carbon::instance($fechaFaker)->startOfDay();
+        
+        $final = (clone $inicio)->addDays(rand(1, 7));
 
         return [
             'estado' => $this->faker->randomElement(['pendiente', 'confirmada', 'cancelada']),
-            'fecha_inicio' => $inicio,
-            'fecha_final' => $final,
+            'fecha_inicio' => $inicio->toDateTimeString(),
+            'fecha_final' => $final->toDateTimeString(),
             'precio_total' => $this->faker->numberBetween(100, 1500),
-            'user_id' => User::inRandomOrder()->first()->id,
-            'habitacion_id' => Habitacion::inRandomOrder()->first()->id,
-            'temporada_id' => Temporada::inRandomOrder()->first()->id,
+            'user_id' => User::inRandomOrder()->first()->id ?? 1,
+            'habitacion_id' => Habitacion::inRandomOrder()->first()->id ?? 1,
+            'temporada_id' => Temporada::inRandomOrder()->first()->id ?? 1,
         ];
     }
 }

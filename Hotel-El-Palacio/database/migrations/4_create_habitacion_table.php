@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('habitaciones', function (Blueprint $table) {
             $table->id();
             $table->integer('numero');
+            $table->string('estado')->default('disponible');
             $table->integer('camas_individual');
             $table->integer('camas_doble');
             $table->bigInteger('precio');

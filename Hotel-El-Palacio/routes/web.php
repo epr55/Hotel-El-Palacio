@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\PagoController;
     use App\Http\Controllers\InicioController;
     use App\Http\Controllers\MisReservasController;
+    use App\Http\Controllers\RecepcionistaController;
 
     Route::get('/', [InicioController::class, 'home'])->name('home');
 
@@ -47,6 +48,15 @@ use Illuminate\Support\Facades\Route;
         Route::get('/admin/mantenimientos', [InicioController::class, 'tablaMantenimientos'])->name('admin.mantenimientos');
         Route::get('/admin/temporadas', [InicioController::class, 'tablaTemporadas'])->name('admin.temporadas');
         Route::get('/admin/servicios', [InicioController::class, 'tablaServicios'])->name('admin.servicios');
+
+        //Rutas recepcionista
+        Route::prefix('recepcionista')->name('recepcionista.')->group(function () {
+            Route::get('/inicio', [RecepcionistaController::class, 'index'])->name('inicio');
+            Route::get('/habitaciones-disponibles', [RecepcionistaController::class, 'disponibles'])->name('disponibles');
+            Route::get('/bloqueo-habitaciones', [RecepcionistaController::class, 'bloqueo'])->name('bloqueo');
+            Route::post('/habitaciones/cambiar-estado', [RecepcionistaController::class, 'cambiarEstado'])->name('cambiarEstado');
+            Route::post('/reservas/cancelar', [RecepcionistaController::class, 'cancelarReserva'])->name('cancelarReserva');
+        });
 
         //Rutas administracion (borrar)
         Route::delete('/admin/borrar/usuario/{id}', [AdminController::class, 'borrarUser'])->name('admin.borrar.usuario');

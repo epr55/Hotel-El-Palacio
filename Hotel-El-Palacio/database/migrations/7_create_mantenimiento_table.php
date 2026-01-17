@@ -13,6 +13,8 @@ return new class extends Migration {
             $table->dateTime('fecha_final');
             $table->string('motivo')->nullable();
             $table->foreignId('habitacion_id')->constrained('habitaciones')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
+            
             $table->timestamps();
         });
     }
