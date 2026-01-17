@@ -235,6 +235,9 @@
 
                 <form id="servicios-form">
                     @foreach($servicios as $servicio)
+                        @php 
+                            $estaContratado = isset($serviciosContratadosIds) && in_array($servicio->id, $serviciosContratadosIds);
+                        @endphp
                         <div class="servicio-item">
                             <input type="checkbox"
                                    class="servicio-checkbox"
@@ -242,7 +245,8 @@
                                    value="{{ $servicio->id }}"
                                    data-precio="{{ $servicio->precio }}"
                                    data-nombre="{{ $servicio->nombre }}"
-                                   data-tipo="{{ $servicio->tipo_cobro }}">
+                                   data-tipo="{{ $servicio->tipo_cobro }}"
+                                   {{ $estaContratado ? 'checked' : '' }}>
 
                             <label for="servicio-{{ $servicio->id }}" class="servicio-label">
                                 <span class="servicio-icono">
@@ -260,14 +264,13 @@
                             </label>
 
                             @if(str_contains($servicio->tipo_cobro, 'personalizable'))
-                                <input
-                                    type="number"
+                                <input type="number"
                                     id="cantidad-{{ $servicio->id }}"
                                     class="servicio-cantidad"
                                     min="1"
-                                    value="1"
-                                    disabled
-                                    title="Número de personas para el spa">
+                                    value="{{ $cantidadesContratadas[$servicio->id] ?? 1 }}"
+                                    {{ $estaContratado ? '' : 'disabled' }}
+                                    title="Número de personas para el servicio">
                             @endif
                         </div>
                     @endforeach
@@ -301,6 +304,7 @@
 
                 <form id="payment-form" method="POST" action="{{ route('pago.init') }}">
                     @csrf
+                    <input type="hidden" name="reserva_id" value="{{ $reservaId ?? '' }}">
                     <input type="hidden" name="importe" id="importe-hidden" value="{{ $precioBase }}">
                     <input type="hidden" name="habitacion_id" value="{{ $habitacion->id }}">
                     <input type="hidden" name="checkin" value="{{ $checkin }}">
@@ -309,7 +313,7 @@
                     <input type="hidden" name="servicios" id="servicios-hidden" value="[]">
                     
                     <button class="btn-confirmar" type="submit">
-                        Confirmar Reserva y Pagar
+                        {{ isset($reservaId) ? 'Guardar Cambios y Pagar Diferencia' : 'Confirmar Reserva y Pagar' }}
                     </button>
                 </form>
             </div>
@@ -446,7 +450,6 @@
         // Inicializar valores al cargar
         actualizarPrecios();
         
-        // Debug: Ver qué se envía al hacer submit
         document.getElementById('payment-form').addEventListener('submit', function(e) {
             console.log('Importe:', document.getElementById('importe-hidden').value);
             console.log('Servicios:', document.getElementById('servicios-hidden').value);

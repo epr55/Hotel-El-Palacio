@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\ReservaController;
     use App\Http\Controllers\PagoController;
     use App\Http\Controllers\InicioController;
+    use App\Http\Controllers\MisReservasController;
 
     Route::get('/', [InicioController::class, 'home'])->name('home');
 
@@ -78,6 +79,12 @@ use Illuminate\Support\Facades\Route;
         
         // Iniciar proceso de pago
         Route::post('/pago/init', [PagoController::class, 'initPayment'])->name('pago.init');
+
+        //Ruta para la página de mis reservas
+        Route::get('/mis-reservas', [MisReservasController::class, 'index'])->name('reservas.usuario');
+
+        //Ruta para cancelar una reserva
+        Route::post('/reservas/{id}/cancelar', [ReservaController::class, 'cancelar'])->name('reservas.cancelar');
     });
     
     // Página de confirmación del pago (no requiere auth porque viene del TPV)

@@ -572,6 +572,84 @@
             }
         }
 
+        /* --- Estilos del Desplegable de Usuario --- */
+        .user-profile-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-trigger {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .dropdown-trigger:hover {
+            opacity: 0.8;
+        }
+
+        .dropdown-trigger span {
+            color: #D39D55; 
+            font-weight: 500; 
+            font-family: 'Mozilla Headline', sans-serif; 
+            font-size: 1.25rem;
+        }
+
+        .dropdown-trigger img {
+            width: 50px; 
+            height: 50px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 2px solid #D39D55;
+        }
+
+        .profile-menu {
+            display: none; /* Oculto por defecto */
+            position: absolute; 
+            right: 0; 
+            top: 100%; 
+            background-color: #FFFAF3; 
+            min-width: 200px; 
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15); 
+            border-radius: 12px; 
+            border: 1px solid #BDC1C7; 
+            z-index: 1000;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .dropdown-link {
+            display: block; 
+            padding: 12px 20px; 
+            text-decoration: none; 
+            color: #1F2937; 
+            font-weight: 600;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .dropdown-link:hover {
+            background-color: #FEF7EC;
+            color: #DF9E2D !important;
+        }
+
+        .btn-logout-dropdown {
+            width: 100%; 
+            text-align: left; 
+            background: none; 
+            border: none; 
+            padding: 12px 20px; 
+            color: #E15218; 
+            font-weight: bold; 
+            cursor: pointer;
+        }
+
+        .btn-logout-dropdown:hover {
+            background-color: #fff5f5;
+        }
+
     </style>
 
 </head>
@@ -590,31 +668,25 @@
 
             <div class="navbar-right d-flex align-items-center gap-3">
                 @auth
-                    <a href="{{ route('perfil') }}" style="text-decoration: none;">
-                        <span style="
-                            color: #D39D55; 
-                            font-weight: 500; 
-                            font-family: 'Mozilla Headline', sans-serif; 
-                            font-size: 1.25rem;
-                            cursor: pointer;
-                        ">
-                            {{ Auth::user()->name }}
-                        </span>
-                    
-                        <img src="{{ asset('images/perfil.png') }}" alt="Foto de perfil" 
-                            style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
-                    </a>
-                    <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
-                        @csrf
-                        <button type="submit" class="btn-logout btn btn-outline-danger btn-sm">Cerrar sesión</button>
-                    </form>
+                    <div class="user-profile-dropdown">
+                        <div id="profileTrigger" class="dropdown-trigger">
+                            <span>{{ Auth::user()->name }}</span>
+                            <img src="{{ asset('images/perfil.png') }}" alt="Foto de perfil">
+                        </div>
+
+                        <div id="profileMenu" class="profile-menu">
+                            <a href="{{ route('perfil') }}" class="dropdown-link">Mis Datos</a>
+                            <a href="{{ route('reservas.usuario') }}" class="dropdown-link">Mis Reservas</a>
+
+                            <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
+                                @csrf
+                                <button type="submit" class="btn-logout-dropdown">Cerrar Sesión</button>
+                            </form>
+                        </div>
+                    </div>
                 @else
-                    <a href="{{ route('login') }}">
-                        <button>Iniciar Sesión</button>
-                    </a>
-                    <a href="{{ route('registro') }}">
-                        <button>Registrarse</button>
-                    </a>
+                    <a href="{{ route('login') }}"><button>Iniciar Sesión</button></a>
+                    <a href="{{ route('registro') }}"><button>Registrarse</button></a>
                 @endauth
             </div>
         </div>
@@ -680,6 +752,24 @@
             © {{ date('Y') }} Hotel El Palacio · Todos los derechos reservados
         </div>
     </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const trigger = document.getElementById('profileTrigger');
+            const menu = document.getElementById('profileMenu');
 
+            if (trigger && menu) {
+                trigger.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!trigger.contains(e.target) && !menu.contains(e.target)) {
+                        menu.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
