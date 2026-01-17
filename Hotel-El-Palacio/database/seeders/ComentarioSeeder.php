@@ -10,8 +10,6 @@ class ComentarioSeeder extends Seeder
 {
     public function run(): void
     {
-        $usuarios = User::all();
-
         Comentario::factory()->count(20)->create([]);
     }
 }

@@ -10,10 +10,6 @@ class MantenimientoSeeder extends Seeder
 {
     public function run(): void
     {
-        $habitaciones = Habitacion::all();
-
-        Mantenimiento::factory()->count(15)->create([
-            'habitacion_id' => $habitaciones->random()->id,
-        ]);
+        Mantenimiento::factory()->count(15)->create([]);
     }
 }

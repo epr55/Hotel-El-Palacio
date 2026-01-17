@@ -32,7 +32,7 @@
 
     table {
         width: 100%;
-        border-collapse: collapse;
+        border-collapse:collapse;
     }
 
     thead {
@@ -71,26 +71,71 @@
 
     .action-buttons {
         display: flex;
+        justify-content: center;
         gap: 8px;
     }
 
     .btn-action {
-        padding: 6px 12px;
-        border-radius: 8px;
+        position: relative;
+        padding: 7px 14px;
+        border-radius: 10px;
         font-size: 0.85rem;
         font-weight: 600;
-        border: none;
+        border: 1.5px solid transparent;
         cursor: pointer;
+        background-color: transparent;
+        transition: background-color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .btn-action::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 6px;
+        width: 0;
+        height: 2px;
+        transform: translateX(-50%);
+        transition: width 0.25s ease;
+        border-radius: 2px;
     }
 
     .btn-edit {
-        background-color: #E15218;
-        color: white;
+        color: #6F540F;
+        background-color: #FDECC8;
+        border-color: #E6C27A;
+    }
+
+
+    .btn-edit::after {
+        background-color: #D39D55;
+    }
+
+    .btn-edit:hover {
+        border-color: #D39D55;
+        background-color: #FFF6E8;
+    }
+
+    .btn-edit:hover::after {
+        width: 60%;
     }
 
     .btn-delete {
-        background-color: #dc2626;
-        color: white;
+        color: #7F1D1D;
+        background-color: #FBDADA;
+        border-color: #E57373;
+    }
+
+    .btn-delete::after {
+        background-color: #DC2626;
+    }
+
+    .btn-delete:hover {
+        border-color: #DC2626;
+        background-color: #FDE8E8;
+    }
+
+    .btn-delete:hover::after {
+        width: 70%;
     }
 
     .pagination-wrapper {
@@ -101,8 +146,8 @@
     }
 
     .pagination-wrapper nav, .pagination {
-        background: transparent !important;
-        box-shadow: none !important;
+        background: transparent;
+        box-shadow: none;
     }
 
     .pagination-wrapper p {
@@ -114,7 +159,7 @@
     }
 
     .page-link {
-        border-radius: 8px !important;
+        border-radius: 8px;
         border: 1px solid #e0e0e0;
         color: #1A1A1A;
         padding: 8px 14px;
@@ -156,7 +201,6 @@
         color: white;
         border-color: #E15218;
     }
-
 </style>
 
 <div class="table-wrapper">
@@ -191,8 +235,14 @@
                         <td>{{ \Carbon\Carbon::parse($comentario->fecha)->format('d/m/Y') }}</td>
                         <td>
                             <div class="action-buttons">
-                                <button class="btn-action btn-edit">Editar</button>
-                                <button class="btn-action btn-delete">Eliminar</button>
+                                <form action="{{ route('admin.borrar.comentario', $comentario->id) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres eliminar este comentario?')">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button type="submit" class="btn-action btn-delete">
+                                        Eliminar
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Gestión de Reservas')
+@section('title', 'Gestión de Servicios')
 
 @section('content')
 
@@ -18,7 +18,7 @@
         border-radius: 15px;
         box-shadow: 0 8px 30px rgba(0,0,0,0.1);
         width: 100%;
-        max-width: 1500px;
+        max-width: 1100px;
         border: 1px solid #eee;
     }
 
@@ -202,58 +202,21 @@
         border-color: #E15218;
     }
 
-    /*CSS SOLO TABLA RESERVA*/
-    .estado-badge {
-        padding: 6px 12px;
-        border-radius: 12px;
-        font-size: 0.8rem;
-        font-weight: 700;
-        display: inline-block;
-        min-width: 95px;
-        text-align: center;
-    }
-
-    .estado-confirmada {
-        background-color: #dcfce7;
-        color: #166534;
-        border: 1px solid #86efac;
-    }
-
-    .estado-cancelada {
-        background-color: #fee2e2;
-        color: #991b1b;
-        border: 1px solid #fca5a5;
-    }
-
-    .estado-pendiente {
-        background-color: #fef3c7;
-        color: #92400e;
-        border: 1px solid #fde68a;
-    }
-
-    .servicios-lista {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        justify-content: center;
-    }
-
-    .servicio-badge {
-        background-color: #eef2ff;
-        color: #3730a3;
-        border: 1px solid #c7d2fe;
-        border-radius: 10px;
-        padding: 4px 8px;
-        font-size: 0.75rem;
+    /*CSS SOLO TABLA SERVICIOS*/
+    .precio-servicio {
         font-weight: 600;
-        white-space: nowrap;
+    }
+
+    .tipo-cobro {
+        font-size: 0.8rem;
+        color: #666;
     }
 </style>
 
 <div class="table-wrapper">
     <div class="table-container">
         
-        <h3 class="table-title">Reservas</h3>
+        <h3 class="table-title">Servicios</h3>
 
         <a href="{{ route('home') }}" class="btn-back-admin">
             Atrás
@@ -262,59 +225,49 @@
         <table>
             <thead>
                 <tr>
-                    <th>Usuario</th>
-                    <th>Habitación</th>
-                    <th>Estado</th>
-                    <th>Inicio</th>
-                    <th>Fin</th>
+                    <th>Nombre</th>
                     <th>Precio</th>
-                    <th>Temporada</th>
-                    <th>Servicios</th>
+                    <th>Descripcion</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
 
             <tbody>
-                @forelse ($reservas as $reserva)
+                @forelse ($servicios as $servicio)
                     <tr>
-
-                        <td>{{ $reserva->usuario->name ?? '—' }}</td>
-                        <td>{{ $reserva->habitacion->numero ?? '—' }}</td>
+                        <td>{{ $servicio->nombre }}</td>
                         <td>
-                            <span class="estado-badge 
-                                {{ $reserva->estado === 'confirmada' ? 'estado-confirmada' : '' }}
-                                {{ $reserva->estado === 'cancelada' ? 'estado-cancelada' : '' }}
-                                {{ $reserva->estado === 'pendiente' ? 'estado-pendiente' : '' }}">
-                                {{ $reserva->estado }}
-                            </span>
+                            <div class="precio-servicio">
+                                {{ number_format($servicio->precio, 1) }}€
+                            </div>
+                            <div class="tipo-cobro">
+                                @switch($servicio->tipo_cobro)
+                                    @case('por_persona_noche')
+                                        /persona /noche
+                                        @break
+                                    @case('por_noche')
+                                        /noche
+                                        @break
+                                    @case('personalizable_por_persona')
+                                        /persona (personalizable)
+                                        @break
+                                    @case('unico')
+                                        pago único
+                                        @break
+                                @endswitch
+                            </div>
                         </td>
-                        <td>{{ \Carbon\Carbon::parse($reserva->fecha_inicio)->format('d/m/Y') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($reserva->fecha_final)->format('d/m/Y') }}</td>
-                        <td>{{ number_format($reserva->precio_total, 2) }}€</td>
-                        <td>{{ $reserva->temporada->nombre ?? '—' }}</td>
-                        <td>
-                            @if ($reserva->servicios->count())
-                                <div class="servicios-lista">
-                                    @foreach ($reserva->servicios as $servicio)
-                                        <span class="servicio-badge">
-                                            {{ $servicio->nombre }}
-                                        </span>
-                                    @endforeach
-                                </div>
-                            @else
-                                —
-                            @endif
-                        </td>
+                        <td>{{ $servicio->descripcion }}</td>
                         <td>
                             <div class="action-buttons">
-                                <form action="{{ route('admin.formulario.editar.reserva', $reserva->id) }}" method="GET">
+                                <form action="{{ route('admin.formulario.editar.servicio', $servicio->id) }}" method="GET">
                                     @csrf
 
                                     <button type="submit" class="btn-action btn-edit">
                                         Editar
                                     </button>
                                 </form>
-                                <form action="{{ route('admin.borrar.reserva', $reserva->id) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres eliminar esta reserva?')">
+                                <form action="{{ route('admin.borrar.servicio', $servicio->id) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres eliminar este servicio?')">
                                     @csrf
                                     @method('DELETE')
 
@@ -328,7 +281,7 @@
                 @empty
                     <tr>
                         <td colspan="10" style="text-align:center; padding:20px;">
-                            No hay reservas registradas.
+                            No hay servicios registradas.
                         </td>
                     </tr>
                 @endforelse
@@ -336,7 +289,7 @@
         </table>
 
         <div class="pagination-wrapper">
-            {{ $reservas->links('pagination::bootstrap-5') }}
+            {{ $servicios->links('pagination::bootstrap-5') }}
         </div>
 
     </div>
