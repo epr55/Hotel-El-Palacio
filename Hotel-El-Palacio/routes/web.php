@@ -11,8 +11,11 @@ use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\InicioController;
     use App\Http\Controllers\MisReservasController;
     use App\Http\Controllers\RecepcionistaController;
+    use App\Http\Controllers\ComentarioController;
 
     Route::get('/', [InicioController::class, 'home'])->name('home');
+    
+    Route::get('/opiniones', [InicioController::class, 'todasOpiniones'])->name('opiniones.todas');
 
     Route::get('/login', [LoginController::class, 'show'])->name('login');
 
@@ -38,6 +41,10 @@ use Illuminate\Support\Facades\Route;
     Route::middleware(['auth'])->group(function () {
         // Ver el perfil
         Route::get('/perfil', function () { return view('perfil'); })->name('perfil');
+        
+        // Rutas de opiniones (requieren autenticación)
+        Route::get('/opiniones/crear', [ComentarioController::class, 'crear'])->name('opiniones.crear');
+        Route::post('/opiniones/guardar', [ComentarioController::class, 'guardar'])->name('opiniones.guardar');
 
         //Rutas administracion (ver tablas)
         Route::get('/admin/usuarios', [InicioController::class, 'tablaUsuarios'])->name('admin.usuarios');
