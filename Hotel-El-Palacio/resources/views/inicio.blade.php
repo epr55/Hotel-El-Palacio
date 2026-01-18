@@ -3,26 +3,59 @@
 @section('title', 'Inicio')
 
 @section('content')
-    <div class="hero-search-wrapper" style="
-        padding: 40px 20px; 
-        display: flex; 
+    <!-- Hero Section con imagen de fondo -->
+    <div class="hero-section" style="
+        position: relative;
+        min-height: 500px;
+        display: flex;
+        align-items: center;
         justify-content: center;
+        padding: 60px 20px;
+        overflow: hidden;
     ">
-        <div class="search-container" style="
-            background-color: #fff;
-            padding: 25px 35px;
-            border-radius: 15px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        <!-- Imagen de fondo -->
+        <div style="
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 1100px;
-            border: 1px solid #eee;
+            height: 100%;
+            background-image: url('{{ asset('images/suite.png') }}');
+            background-size: cover;
+            background-position: center;
+            filter: blur(2px);
+            z-index: 1;
+        "></div>
+        
+        <!-- Overlay suave -->
+        <div style="
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 248, 235, 0.85);
+            z-index: 2;
+        "></div>
+        
+        <!-- Buscador -->
+        <div class="search-container" style="
+            position: relative;
+            z-index: 3;
+            background-color: #fff;
+            padding: 35px 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 1200px;
         ">
             <h3 style="
                 color: #D39D55; 
-                margin-bottom: 20px; 
+                margin-bottom: 25px; 
                 font-family: 'Mozilla Headline', sans-serif; 
-                font-size: 1.6rem;
+                font-size: 1.8rem;
                 margin-top: 0;
+                text-align: center;
             ">
                 Encuentra tu habitación perfecta
             </h3>
@@ -92,13 +125,136 @@
         </div>
     </div>
 
+    <!-- Sección "Por qué elegir Hotel El Palacio" -->
+    <div style="
+        padding: 70px 20px;
+        background: #ffffff;
+    ">
+        <div style="
+            max-width: 1200px;
+            margin: 0 auto;
+        ">
+            <h2 style="
+                text-align: center;
+                color: #1A1A1A;
+                font-family: 'Mozilla Headline', sans-serif;
+                font-size: 2.2rem;
+                margin-bottom: 50px;
+            ">
+                Por qué elegir Hotel El Palacio
+            </h2>
+            
+            <div style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 40px;
+            ">
+                <!-- Ventaja 1 -->
+                <div style="
+                    text-align: center;
+                    padding: 30px 20px;
+                    background: white;
+                    border-radius: 16px;
+                    transition: transform 0.3s;
+                " class="ventaja-card">
+                    <div style="
+                        font-size: 3rem;
+                        margin-bottom: 20px;
+                    ">
+                        🏨
+                    </div>
+                    <h3 style="
+                        color: #D39D55;
+                        font-family: 'Mozilla Headline', sans-serif;
+                        font-size: 1.4rem;
+                        margin-bottom: 15px;
+                    ">
+                        Ubicación céntrica
+                    </h3>
+                    <p style="
+                        color: #666;
+                        font-size: 1rem;
+                        line-height: 1.6;
+                        margin: 0;
+                    ">
+                        En el corazón de Madrid, cerca de los principales puntos de interés
+                    </p>
+                </div>
+
+                <!-- Ventaja 2 -->
+                <div style="
+                    text-align: center;
+                    padding: 30px 20px;
+                    background: white;
+                    border-radius: 16px;
+                    transition: transform 0.3s;
+                " class="ventaja-card">
+                    <div style="
+                        font-size: 3rem;
+                        margin-bottom: 20px;
+                    ">
+                        🛎️
+                    </div>
+                    <h3 style="
+                        color: #D39D55;
+                        font-family: 'Mozilla Headline', sans-serif;
+                        font-size: 1.4rem;
+                        margin-bottom: 15px;
+                    ">
+                        Servicio 24h
+                    </h3>
+                    <p style="
+                        color: #666;
+                        font-size: 1rem;
+                        line-height: 1.6;
+                        margin: 0;
+                    ">
+                        Atención personalizada las 24 horas del día para tu comodidad
+                    </p>
+                </div>
+
+                <!-- Ventaja 3 -->
+                <div style="
+                    text-align: center;
+                    padding: 30px 20px;
+                    background: white;
+                    border-radius: 16px;
+                    transition: transform 0.3s;
+                " class="ventaja-card">
+                    <div style="
+                        font-size: 3rem;
+                        margin-bottom: 20px;
+                    ">
+                        ⭐
+                    </div>
+                    <h3 style="
+                        color: #D39D55;
+                        font-family: 'Mozilla Headline', sans-serif;
+                        font-size: 1.4rem;
+                        margin-bottom: 15px;
+                    ">
+                        Calidad garantizada
+                    </h3>
+                    <p style="
+                        color: #666;
+                        font-size: 1rem;
+                        line-height: 1.6;
+                        margin: 0;
+                    ">
+                        Opiniones verificadas de clientes reales que han disfrutado nuestros servicios
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Sección de Opiniones -->
     <div class="opiniones-wrapper" style="
-        padding: 60px 20px;
+        padding: 70px 20px;
         background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
     ">
         <div class="opiniones-container" style="
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
         ">
             <h2 style="
@@ -123,16 +279,15 @@
             <div class="comentarios-grid" style="
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-                gap: 25px;
-                margin-bottom: 35px;
+                gap: 30px;
+                margin-bottom: 40px;
             ">
                 @forelse($comentariosDestacados as $comentario)
                     <div class="comentario-card" style="
                         background: white;
                         padding: 30px;
-                        border-radius: 15px;
-                        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-                        border: 1px solid #eee;
+                        border-radius: 16px;
+                        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
                         transition: transform 0.3s, box-shadow 0.3s;
                     ">
                         <div class="estrellas" style="
@@ -223,9 +378,13 @@
     </div>
 
     <style>
+        .ventaja-card:hover {
+            transform: translateY(-5px);
+        }
+        
         .comentario-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
         }
         
         a[href="{{ route('opiniones.todas') }}"]:hover {
