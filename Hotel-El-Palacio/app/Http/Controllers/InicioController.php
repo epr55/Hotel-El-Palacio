@@ -16,8 +16,15 @@ class InicioController extends Controller
 {
     public function home()
     {
+        // Obtener comentarios destacados (últimos 3 con buena valoración)
+        $comentariosDestacados = Comentario::with('usuario')
+            ->where('valoracion', '>=', 4)
+            ->orderBy('fecha', 'desc')
+            ->take(3)
+            ->get();
+        
         if (!Auth::check()) {
-            return view('inicio');
+            return view('inicio', compact('comentariosDestacados'));
         }
 
         $user = Auth::user();
@@ -27,7 +34,16 @@ class InicioController extends Controller
         else if ($user->recepcionista == true) {
             return view('recepcionista.inicio_recepcionista');
         }
-        return view('inicio');
+        return view('inicio', compact('comentariosDestacados'));
+    }
+    
+    public function todasOpiniones()
+    {
+        $comentarios = Comentario::with('usuario')
+            ->orderBy('fecha', 'desc')
+            ->paginate(10);
+        
+        return view('opiniones', compact('comentarios'));
     }
 
     public function tablaUsuarios()

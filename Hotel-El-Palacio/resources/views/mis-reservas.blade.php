@@ -6,9 +6,44 @@
 <div style="background-color: #fcf8f3; min-height: 100vh; padding: 40px 20px;">
     <div style="max-width: 1100px; margin: 0 auto;">
         
-        <div style="margin-bottom: 30px;">
-            <h1 style="font-family: 'Mozilla Headline', sans-serif; font-weight: bold; color: #1A1A1A; margin-bottom: 5px;">Mis Reservas</h1>
-            <p style="color: #666; font-family: 'Mozilla Headline', sans-serif;">Gestiona todas tus reservas</p>
+        <div style="
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        ">
+            <div>
+                <h1 style="font-family: 'Mozilla Headline', sans-serif; font-weight: bold; color: #1A1A1A; margin-bottom: 5px;">Mis Reservas</h1>
+                <p style="color: #666; font-family: 'Mozilla Headline', sans-serif; margin: 0;">Gestiona todas tus reservas</p>
+            </div>
+            
+            @php
+                $tieneReservaFinalizada = $reservas->contains(function($reserva) {
+                    $final = \Carbon\Carbon::parse($reserva->fecha_final);
+                    return $final->isPast() || $reserva->estado == 'finalizada' || $reserva->estado == 'cancelada';
+                });
+            @endphp
+            
+            @if($tieneReservaFinalizada)
+                <a href="{{ route('opiniones.crear') }}" style="
+                    padding: 12px 25px;
+                    background: #D39D55;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 10px;
+                    font-weight: 600;
+                    font-family: Helvetica, sans-serif;
+                    transition: background 0.3s, transform 0.2s;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    box-shadow: 0 3px 10px rgba(211, 157, 85, 0.3);
+                " class="btn-dejar-opinion">
+                    ✍️ Dejar opinión
+                </a>
+            @endif
         </div>
 
         @forelse($reservas as $reserva)
@@ -105,4 +140,11 @@
 
     </div>
 </div>
+
+<style>
+    .btn-dejar-opinion:hover {
+        background: #C6903E;
+        transform: scale(1.05);
+    }
+</style>
 @endsection
