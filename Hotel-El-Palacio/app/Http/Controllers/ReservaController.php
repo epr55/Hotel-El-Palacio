@@ -6,6 +6,7 @@ use App\Models\Habitacion;
 use App\Models\Servicio;
 use App\Models\Reserva;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ReservaController extends Controller
 {
@@ -14,40 +15,39 @@ class ReservaController extends Controller
         $habitacion = Habitacion::with('categoria')->findOrFail($habitacionId);
         $servicios = Servicio::all();
 
+        $checkin = $request->query('fecha_inicio', now()->format('Y-m-d'));
+        $checkout = $request->query('fecha_final');
+        $huespedes = $request->query('huespedes', 1);
+
+        if (!$checkout || $checkout <= $checkin) {
+            $checkout = Carbon::parse($checkin)->addDay()->format('Y-m-d');
+        }
+
         $reservaId = $request->query('reserva_id');
         $serviciosContratadosIds = [];
         $cantidadesContratadas = [];
 
         if ($reservaId) {
             $reservaExistente = Reserva::with('servicios')->find($reservaId);
-            
             if ($reservaExistente) {
                 $serviciosContratadosIds = $reservaExistente->servicios->pluck('id')->toArray();
-                
                 $cantidadesContratadas = $reservaExistente->servicios->mapWithKeys(function ($servicio) {
                     return [$servicio->id => $servicio->pivot->cantidad_personas ?? 1];
                 })->toArray();
-
-                // Si no hay fechas en la URL, las cargamos de la reserva
-                if (!$request->has('checkin')) {
-                    $request->merge([
-                        'checkin' => $reservaExistente->fecha_inicio,
-                        'checkout' => $reservaExistente->fecha_final
-                    ]);
-                }
+                
+                $checkin = $reservaExistente->fecha_inicio;
+                $checkout = $reservaExistente->fecha_final;
             }
         }
         
-        $checkin = $request->input('checkin');
-        $checkout = $request->input('checkout');
-        $huespedes = $request->input('huespedes', 2);
-        
-        $checkinDate = \Carbon\Carbon::parse($checkin);
-        $checkoutDate = \Carbon\Carbon::parse($checkout);
+        $checkinDate = Carbon::parse($checkin);
+        $checkoutDate = Carbon::parse($checkout);
         $noches = (int) $checkinDate->diffInDays($checkoutDate);
         
-        $nochesCalculo = $noches > 0 ? $noches : 0;
-        $precioBase = $habitacion->precio * $nochesCalculo;
+        $nochesCalculo = $noches > 0 ? $noches : 1;
+        
+        $precioPorNoche = $habitacion->precio ?? $habitacion->categoria->precio_base;
+        $precioBase = $precioPorNoche * $nochesCalculo;
         
         return view('completar-reserva', compact(
             'habitacion',

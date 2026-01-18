@@ -22,6 +22,19 @@
         display: grid;
         grid-template-columns: 2fr 1fr;
         gap: 30px;
+        align-items: start;
+    }
+    
+    .precio-card, .card-white {
+        position: static !important;
+        margin-bottom: 0;
+    }
+
+    .reserva-right {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-self: start;
     }
 
     .card-white {
@@ -118,11 +131,6 @@
         cursor: not-allowed;
     }
 
-    .precio-card {
-        position: sticky;
-        top: 30px;
-    }
-
     .precio-linea {
         display: flex;
         justify-content: space-between;
@@ -180,6 +188,58 @@
             height: 200px;
         }
     }
+
+    .tabs-acciones {
+        display: flex;
+        gap: 5px;
+        margin-bottom:
+        15px;
+    }
+
+    .btn-tab {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ddd;
+        background: #f8f9fa;
+        cursor: pointer;
+        border-radius: 8px;
+        font-weight: 600;
+        color: #666;
+    }
+
+    .btn-tab.active {
+        background: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+
+    .search-result-item {
+        padding: 8px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+    .search-result-item:hover {
+        background: #f0f7ff;
+    }
+
+    .cliente-label {
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: #777;
+        margin-bottom: 4px; 
+        display: block;
+    }
+
+    .input-acciones {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+    }
 </style>
 
 
@@ -224,7 +284,9 @@
                         @if($habitacion->escritorio)<p>💼 Zona de trabajo</p>@endif
                         @if($habitacion->cuna)<p>👶 Cuna disponible</p>@endif
 
-                        <p><strong>Precio base:</strong> {{ $habitacion->precio }} € / noche ({{ $noches }} noches)</p>
+                        <p><strong>Precio base:</strong> {{ $habitacion->precio }} € / noche 
+                            ({{ $noches > 0 ? $noches : 1 }} {{ ($noches == 1 || $noches == 0) ? 'noche' : 'noches' }})
+                        </p>
                     </div>
 
                 </div>
@@ -284,8 +346,8 @@
                 <h3 class="card-title">Desglose del Precio</h3>
 
                 <div class="precio-linea">
-                    <span>Habitación ({{ $noches }} noches)</span>
-                    <span id="precio-habitacion">{{ $precioBase }}€</span>
+                    <span>Habitación ({{ $noches > 0 ? $noches : 1 }} noches)</span>
+                    <span id="precio-habitacion">{{ $precioBase > 0 ? $precioBase : $habitacion->precio }}€</span>
                 </div>
 
                 <div id="servicios-seleccionados"></div>
@@ -305,18 +367,52 @@
                 <form id="payment-form" method="POST" action="{{ route('pago.init') }}">
                     @csrf
                     <input type="hidden" name="reserva_id" value="{{ $reservaId ?? '' }}">
-                    <input type="hidden" name="importe" id="importe-hidden" value="{{ $precioBase }}">
+                    <input type="hidden" name="importe" id="importe-hidden" value="{{ $precioBase > 0 ? $precioBase : $habitacion->precio }}">
                     <input type="hidden" name="habitacion_id" value="{{ $habitacion->id }}">
                     <input type="hidden" name="checkin" value="{{ $checkin }}">
                     <input type="hidden" name="checkout" value="{{ $checkout }}">
                     <input type="hidden" name="huespedes" value="{{ $huespedes }}">
                     <input type="hidden" name="servicios" id="servicios-hidden" value="[]">
+                    <input type="hidden" name="cliente_id" id="cliente-id-final" value="">
                     
                     <button class="btn-confirmar" type="submit">
                         {{ isset($reservaId) ? 'Guardar Cambios y Pagar Diferencia' : 'Confirmar Reserva y Pagar' }}
                     </button>
                 </form>
             </div>
+            @if(auth()->user()->recepcionista)
+                <div class="card-white" style="margin-top: 20px;">
+                    <h3 class="card-title">Acciones Rápidas (Cliente)</h3>
+                    
+                    <div class="tabs-acciones">
+                        <button type="button" class="btn-tab active" id="btn-tab-crear">Crear</button>
+                        <button type="button" class="btn-tab" id="btn-tab-buscar">Buscar</button>
+                    </div>
+
+                    <div id="form-crear-cliente">
+                        <span class="cliente-label">Correo Electrónico:</span>
+                        <input type="email" id="input-correo" class="input-acciones" placeholder="ejemplo@correo.com">
+                        <span class="cliente-label">Teléfono:</span>
+                        <input type="text" id="input-telefono" class="input-acciones" placeholder="600000000">
+                        <button type="button" id="btn-guardar-cliente" class="btn-confirmar" style="background: #007bff; margin-top: 5px; padding: 10px;">Guardar</button>
+                    </div>
+
+                    <div id="form-buscar-cliente" style="display: none;">
+                        <span class="cliente-label">Buscar por correo electrónico:</span>
+                        <div style="display: flex; gap: 5px;">
+                            <input type="text" id="input-query" class="input-acciones" placeholder="ejemplo@correo.com">
+                            <button type="button" id="btn-ejecutar-busqueda" style="height: 38px; padding: 0 10px; border-radius: 6px; border: 1px solid #ccc; cursor: pointer;">🔍</button>
+                        </div>
+                        <div id="lista-resultados" style="max-height: 120px; overflow-y: auto; border: 1px solid #eee; border-radius: 6px; margin-top: 5px; display: none;"></div>
+                    </div>
+
+                    <div id="info-cliente-sel" style="margin-top: 15px; padding: 10px; background: #e8f4fd; border-radius: 8px; display: none; border-left: 4px solid #007bff;">
+                        <p style="margin: 0; font-size: 0.85rem; color: #0056b3;"><strong>Cliente vinculado:</strong></p>
+                        <p id="txt-cliente-nombre" style="margin: 0; font-weight: bold;"></p>
+                    </div>
+                </div>
+            @endif
+
         </div>
 
     </div>
@@ -329,8 +425,8 @@
 @endif
 
 <div id="reserva-data"
-     data-precio-base="{{ $precioBase }}"
-     data-noches="{{ $noches }}"
+     data-precio-base="{{ $precioBase > 0 ? $precioBase : $habitacion->precio }}"
+     data-noches="{{ $noches > 0 ? $noches : 1 }}"
      data-huespedes="{{ $huespedes }}">
 </div>
 
@@ -345,7 +441,6 @@
         const totalServiciosSpan = document.getElementById('total-servicios');
         const totalPagarSpan = document.getElementById('total-pagar');
 
-        // Habilitar/deshabilitar inputs de cantidad
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function() {
                 const cantidadInput = document.getElementById('cantidad-' + this.value);
@@ -355,8 +450,6 @@
                 }
                 actualizarPrecios();
             });
-
-            // Agregar listener a inputs de cantidad
             const cantidadInput = document.getElementById('cantidad-' + checkbox.value);
             if (cantidadInput) {
                 cantidadInput.addEventListener('input', actualizarPrecios);
@@ -366,7 +459,6 @@
         function actualizarPrecios() {
             let totalServicios = 0;
             let serviciosHTML = '';
-
             checkboxes.forEach(checkbox => {
                 if (checkbox.checked) {
                     const precio = parseFloat(checkbox.dataset.precio);
@@ -377,82 +469,127 @@
 
                     switch(tipo) {
                         case 'por_persona_noche':
-                            // Desayuno: precio x personas x noches
                             precioTotal = precio * huespedes * noches;
                             detalle = `${nombre} (${precio}€ x ${huespedes} pers. x ${noches} noches)`;
                             break;
-                        
                         case 'por_noche':
-                            // Parking, Cuna: precio x noches
                             precioTotal = precio * noches;
                             detalle = `${nombre} (${precio}€ x ${noches} noches)`;
                             break;
-                        
                         case 'personalizable':
-                            // Spa: precio x cantidad de sesiones (sin multiplicar por persona)
-                            const cantidadInput = document.getElementById('cantidad-' + checkbox.value);
-                            const cantidad = cantidadInput ? parseInt(cantidadInput.value) || 1 : 1;
-                            precioTotal = precio * cantidad;
-                            detalle = `${nombre} (${precio}€ x ${cantidad} sesión${cantidad > 1 ? 'es' : ''})`;
+                            const cInput = document.getElementById('cantidad-' + checkbox.value);
+                            const cant = cInput ? parseInt(cInput.value) || 1 : 1;
+                            precioTotal = precio * cant;
+                            detalle = `${nombre} (${precio}€ x ${cant})`;
                             break;
-                        
-                        case 'personalizable_por_persona':
-                            // Spa: precio x cantidad de sesiones x personas
-                            const cantidadInputPP = document.getElementById('cantidad-' + checkbox.value);
-                            const cantidadPP = cantidadInputPP ? parseInt(cantidadInputPP.value) || 1 : 1;
-                            precioTotal = precio * cantidadPP * huespedes;
-                            detalle = `${nombre} (${precio}€ x ${cantidadPP} sesión${cantidadPP > 1 ? 'es' : ''} x ${huespedes} pers.)`;
-                            break;
-                        
                         case 'unico':
-                            // Traslado, Late checkout: precio fijo
                             precioTotal = precio;
                             detalle = `${nombre}`;
                             break;
-                        
                         default:
                             precioTotal = precio;
                             detalle = nombre;
                     }
-                    
                     totalServicios += precioTotal;
-                    serviciosHTML += `
-                        <div class="precio-linea">
-                            <span>${detalle}:</span>
-                            <span>${precioTotal}€</span>
-                        </div>
-                    `;
+                    serviciosHTML += `<div class="precio-linea"><span>${detalle}:</span><span>${precioTotal}€</span></div>`;
                 }
             });
-
             serviciosDiv.innerHTML = serviciosHTML;
             totalServiciosSpan.textContent = totalServicios + '€';
             totalPagarSpan.textContent = (precioBase + totalServicios) + '€';
-            
-            // Actualizar el importe oculto del formulario
             document.getElementById('importe-hidden').value = precioBase + totalServicios;
             
-            // Actualizar los servicios seleccionados para enviar al backend
-            const serviciosSeleccionados = [];
-            checkboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    const cantidadInput = document.getElementById('cantidad-' + checkbox.value);
-                    serviciosSeleccionados.push({
-                        id: checkbox.value,
-                        nombre: checkbox.dataset.nombre,
-                        cantidad: cantidadInput ? parseInt(cantidadInput.value) || 1 : 1
-                    });
+            const seleccionados = [];
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    const cInput = document.getElementById('cantidad-' + cb.value);
+                    seleccionados.push({ id: cb.value, nombre: cb.dataset.nombre, cantidad: cInput ? parseInt(cInput.value) || 1 : 1 });
                 }
             });
-            document.getElementById('servicios-hidden').value = JSON.stringify(serviciosSeleccionados);
+            document.getElementById('servicios-hidden').value = JSON.stringify(seleccionados);
         }
         
-        // Inicializar valores al cargar
         actualizarPrecios();
-        
+        const btnTabCrear = document.getElementById('btn-tab-crear');
+        if (btnTabCrear) {
+            const btnTabBuscar = document.getElementById('btn-tab-buscar');
+            const formCrear = document.getElementById('form-crear-cliente');
+            const formBuscar = document.getElementById('form-buscar-cliente');
+
+            btnTabCrear.addEventListener('click', () => {
+                btnTabCrear.classList.add('active'); btnTabBuscar.classList.remove('active');
+                formCrear.style.display = 'block'; formBuscar.style.display = 'none';
+            });
+
+            btnTabBuscar.addEventListener('click', () => {
+                btnTabBuscar.classList.add('active'); btnTabCrear.classList.remove('active');
+                formBuscar.style.display = 'block'; formCrear.style.display = 'none';
+            });
+
+            // Guardar Cliente
+            document.getElementById('btn-guardar-cliente').addEventListener('click', function() {
+                const correo = document.getElementById('input-correo').value;
+                const telefono = document.getElementById('input-telefono').value;
+                
+                if(!correo || !telefono) return alert('Rellena correo y teléfono');
+
+                fetch("{{ route('clientes.crearRapido') }}", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                    body: JSON.stringify({ correo: correo, telefono: telefono })
+                })
+                .then(res => res.json())
+                .then(user => {
+                    seleccionarCliente(user.id, user.correo, user.telefono);
+                    alert('Cliente registrado y vinculado.');
+                });
+            });
+
+            // Buscar Cliente
+            document.getElementById('btn-ejecutar-busqueda').addEventListener('click', function() {
+                const q = document.getElementById('input-query').value;
+                if(q.length < 2) return;
+
+                fetch(`/clientes/buscar?q=${q}`)
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById('lista-resultados');
+                    container.innerHTML = '';
+                    container.style.display = 'block';
+                    data.forEach(c => {
+                        const div = document.createElement('div');
+                        div.className = 'search-result-item';
+                        div.textContent = c.correo;
+                        div.onclick = () => seleccionarCliente(c.id, c.correo, c.telefono);
+                        container.appendChild(div);
+                    });
+                    if(data.length === 0) container.innerHTML = '<div style="padding:8px; font-size:0.8rem;">No se encontró el correo</div>';
+                });
+            });
+        }
+
+        function seleccionarCliente(id, correo, telefono) {
+            const inputId = document.getElementById('cliente-id-final');
+            if (inputId) inputId.value = id;
+            
+            const infoDiv = document.getElementById('info-cliente-sel');
+            if (infoDiv) {
+                document.getElementById('txt-cliente-nombre').textContent = correo + ' (Tel: ' + telefono + ')';
+                infoDiv.style.display = 'block';
+            }
+            
+            const lista = document.getElementById('lista-resultados');
+            if (lista) lista.style.display = 'none';
+        }
+
         document.getElementById('payment-form').addEventListener('submit', function(e) {
-            console.log('Importe:', document.getElementById('importe-hidden').value);
-            console.log('Servicios:', document.getElementById('servicios-hidden').value);
+            const esRecepcionista = {{ auth()->user()->recepcionista ? 'true' : 'false' }};
+            const clienteSeleccionado = document.getElementById('cliente-id-final').value;
+
+            if(esRecepcionista && !clienteSeleccionado) {
+                e.preventDefault();
+                alert('Como recepcionista, debes crear o buscar un cliente para realizar la reserva.');
+            }
         });
     });
 </script>

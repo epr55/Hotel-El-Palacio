@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Models\Reserva;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class PagoController extends Controller
 {
@@ -23,6 +24,7 @@ class PagoController extends Controller
         
         $request->validate([
             'reserva_id' => 'nullable|integer',
+            'cliente_id' => 'nullable|integer|exists:users,id',
             'importe' => 'required|numeric|min:0',
             'habitacion_id' => 'required|integer',
             'checkin' => 'required|date',
@@ -70,6 +72,7 @@ class PagoController extends Controller
                 session([
                     'reserva_pendiente' => [
                         'reserva_id' => $request->input('reserva_id'),
+                        'cliente_id' => $request->input('cliente_id'),
                         'habitacion_id' => $request->input('habitacion_id'),
                         'checkin' => $request->input('checkin'),
                         'checkout' => $request->input('checkout'),
@@ -160,7 +163,7 @@ class PagoController extends Controller
                         }
                     } else {
                         $reserva = Reserva::create([
-                            'user_id' => Auth::id(),
+                            'user_id' => $reservaPendiente['cliente_id'] ?? Auth::id(),
                             'habitacion_id' => $reservaPendiente['habitacion_id'],
                             'fecha_inicio' => $reservaPendiente['checkin'],
                             'fecha_final' => $reservaPendiente['checkout'],

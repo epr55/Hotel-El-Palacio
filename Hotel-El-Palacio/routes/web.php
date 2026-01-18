@@ -58,6 +58,9 @@ use Illuminate\Support\Facades\Route;
             Route::post('/reservas/cancelar', [RecepcionistaController::class, 'cancelarReserva'])->name('cancelarReserva');
         });
 
+        Route::get('/clientes/buscar', [RecepcionistaController::class, 'buscarCliente'])->name('clientes.buscar');
+        Route::post('/clientes/crear-rapido', [RecepcionistaController::class, 'crearClienteRapido'])->name('clientes.crearRapido');
+
         //Rutas administracion (borrar)
         Route::delete('/admin/borrar/usuario/{id}', [AdminController::class, 'borrarUser'])->name('admin.borrar.usuario');
         Route::delete('/admin/borrar/habitacion/{id}', [AdminController::class, 'borrarHabitacion'])->name('admin.borrar.habitacion');

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Habitacion;
 use App\Models\Mantenimiento;
 use App\Models\Reserva;
+use App\Models\User;
 use Carbon\Carbon;
 
 class RecepcionistaController extends Controller
@@ -124,5 +125,36 @@ class RecepcionistaController extends Controller
         $habitacion->save();
 
         return back()->with('success', 'Habitación ' . $habitacion->numero . ' actualizada con éxito.');
+    }
+
+    public function buscarCliente(Request $request)
+    {
+        $q = $request->query('q');
+        
+        $clientes = User::where('correo', 'LIKE', "%{$q}%")
+            ->get(['id', 'correo', 'telefono']);
+            
+        return response()->json($clientes);
+    }
+
+    public function crearClienteRapido(Request $request)
+    {
+        $request->validate([
+            'correo' => 'required|email|unique:users,correo',
+            'telefono' => 'required|string',
+        ]);
+
+        $nombreTemporal = explode('@', $request->correo)[0];
+
+        $user = User::create([
+            'name'          => $nombreTemporal,
+            'correo'        => $request->correo,
+            'telefono'      => $request->telefono,
+            'password'      => bcrypt('cliente123'),
+            'admin'         => false,
+            'recepcionista' => false,
+        ]);
+
+        return response()->json($user);
     }
 }
