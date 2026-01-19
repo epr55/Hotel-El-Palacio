@@ -18,7 +18,7 @@
         border-radius: 15px;
         box-shadow: 0 8px 30px rgba(0,0,0,0.1);
         width: 100%;
-        max-width: 1500px;
+        max-width: 1300px;
         border: 1px solid #eee;
     }
 
@@ -138,6 +138,25 @@
         width: 70%;
     }
 
+    .btn-add {
+        color: #166534;
+        background-color: #DCFCE7;
+        border-color: #86EFAC;
+    }
+
+    .btn-add::after {
+        background-color: #16A34A;
+    }
+
+    .btn-add:hover {
+        border-color: #16A34A;
+        background-color: #ECFDF5;
+    }
+
+    .btn-add:hover::after {
+        width: 65%;
+    }
+
     .pagination-wrapper {
         display: flex;
         justify-content: center;
@@ -255,9 +274,17 @@
         
         <h3 class="table-title">Reservas</h3>
 
-        <a href="{{ route('home') }}" class="btn-back-admin">
-            Atrás
-        </a>
+        <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 20px;">
+            <a href="{{ route('home') }}" class="btn-back-admin">
+                Atrás
+            </a>
+
+            <form action="{{ route('admin.formulario.insertar.reserva') }}" method="GET">
+                <button type="submit" class="btn-action btn-add">
+                    Añadir
+                </button>
+            </form>
+        </div>
 
         <table>
             <thead>

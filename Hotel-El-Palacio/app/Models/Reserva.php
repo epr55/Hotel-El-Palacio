@@ -30,8 +30,7 @@ class Reserva extends Model
 
     public function servicios()
     {
-        return $this->belongsToMany(Servicio::class, 'servicios_reservados', 'reserva_id', 'servicio_id')
-                    ->withPivot('cantidad_personas');
+        return $this->belongsToMany(Servicio::class, 'servicios_reservados', 'reserva_id', 'servicio_id');
     }
 
 }

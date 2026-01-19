@@ -79,12 +79,12 @@ use Illuminate\Support\Facades\Route;
         Route::delete('/admin/borrar/servicio/{id}', [AdminController::class, 'borrarServicio'])->name('admin.borrar.servicio');
 
         //Rutas administracion (ir a editar)
-        Route::get('/admin/formulario/editar/habitacion/{id}', [AdminController::class, 'formularioHabitacion'])->name('admin.formulario.editar.habitacion');
-        Route::get('/admin/formulario/editar/reserva/{id}', [AdminController::class, 'formularioReserva'])->name('admin.formulario.editar.reserva');
-        Route::get('/admin/formulario/editar/categoria/{id}', [AdminController::class, 'formularioCategoria'])->name('admin.formulario.editar.categoria');
-        Route::get('/admin/formulario/editar/mantenimiento/{id}', [AdminController::class, 'formularioMantenimiento'])->name('admin.formulario.editar.mantenimiento');
-        Route::get('/admin/formulario/editar/temporada/{id}', [AdminController::class, 'formularioTemporada'])->name('admin.formulario.editar.temporada');
-        Route::get('/admin/formulario/editar/servicio/{id}', [AdminController::class, 'formularioServicio'])->name('admin.formulario.editar.servicio');
+        Route::get('/admin/formulario/editar/habitacion/{id}', [AdminController::class, 'formularioEditarHabitacion'])->name('admin.formulario.editar.habitacion');
+        Route::get('/admin/formulario/editar/reserva/{id}', [AdminController::class, 'formularioEditarReserva'])->name('admin.formulario.editar.reserva');
+        Route::get('/admin/formulario/editar/categoria/{id}', [AdminController::class, 'formularioEditarCategoria'])->name('admin.formulario.editar.categoria');
+        Route::get('/admin/formulario/editar/mantenimiento/{id}', [AdminController::class, 'formularioEditarMantenimiento'])->name('admin.formulario.editar.mantenimiento');
+        Route::get('/admin/formulario/editar/temporada/{id}', [AdminController::class, 'formularioEditarTemporada'])->name('admin.formulario.editar.temporada');
+        Route::get('/admin/formulario/editar/servicio/{id}', [AdminController::class, 'formularioEditarServicio'])->name('admin.formulario.editar.servicio');
 
         //Rutas administracion (editar)
         Route::put('/admin/editar/habitacion/{id}', [AdminController::class, 'editarHabitacion'])->name('admin.editar.habitacion');
@@ -93,6 +93,24 @@ use Illuminate\Support\Facades\Route;
         Route::put('/admin/editar/mantenimiento/{id}', [AdminController::class, 'editarMantenimiento'])->name('admin.editar.mantenimiento');
         Route::put('/admin/editar/temporada/{id}', [AdminController::class, 'editarTemporada'])->name('admin.editar.temporada');
         Route::put('/admin/editar/servicio/{id}', [AdminController::class, 'editarServicio'])->name('admin.editar.servicio');
+
+        //Rutas administracion (ir a insertar)
+        Route::get('/admin/formulario/insertar/habitacion', [AdminController::class, 'formularioInsertarHabitacion'])->name('admin.formulario.insertar.habitacion');
+        Route::get('/admin/formulario/insertar/reserva', [AdminController::class, 'formularioInsertarReserva'])->name('admin.formulario.insertar.reserva');
+        Route::get('/admin/formulario/insertar/categoria', [AdminController::class, 'formularioInsertarCategoria'])->name('admin.formulario.insertar.categoria');
+        Route::get('/admin/formulario/insertar/mantenimiento', [AdminController::class, 'formularioInsertarMantenimiento'])->name('admin.formulario.insertar.mantenimiento');
+        Route::get('/admin/formulario/insertar/temporada', [AdminController::class, 'formularioInsertarTemporada'])->name('admin.formulario.insertar.temporada');
+        Route::get('/admin/formulario/insertar/servicio', [AdminController::class, 'formularioInsertarServicio'])->name('admin.formulario.insertar.servicio');
+        Route::get('/admin/formulario/insertar/usuario', [AdminController::class, 'formularioInsertarUsuario'])->name('admin.formulario.insertar.usuario');
+
+        //Rutas administracion (insertar)
+        Route::post('/admin/insertar/habitacion', [AdminController::class, 'insertarHabitacion'])->name('admin.insertar.habitacion');
+        Route::post('/admin/insertar/reserva', [AdminController::class, 'insertarReserva'])->name('admin.insertar.reserva');
+        Route::post('/admin/insertar/categoria', [AdminController::class, 'insertarCategoria'])->name('admin.insertar.categoria');
+        Route::post('/admin/insertar/mantenimiento', [AdminController::class, 'insertarMantenimiento'])->name('admin.insertar.mantenimiento');
+        Route::post('/admin/insertar/temporada', [AdminController::class, 'insertarTemporada'])->name('admin.insertar.temporada');
+        Route::post('/admin/insertar/servicio', [AdminController::class, 'insertarServicio'])->name('admin.insertar.servicio');
+        Route::post('/admin/insertar/usuario', [AdminController::class, 'insertarUsuario'])->name('admin.insertar.usuario');
 
         // Actualizar el perfil
         Route::put('/perfil/actualizar', [PerfilController::class, 'update'])->name('perfil.update');

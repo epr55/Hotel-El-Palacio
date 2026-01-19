@@ -312,13 +312,7 @@
 
                             <label for="servicio-{{ $servicio->id }}" class="servicio-label">
                                 <span class="servicio-icono">
-                                    @if($servicio->nombre === 'Desayuno buffet') 🍳
-                                    @elseif($servicio->nombre === 'Parking privado') 🅿️
-                                    @elseif($servicio->nombre === 'Acceso al Spa') 🧖
-                                    @elseif($servicio->nombre === 'Traslado al aeropuerto') 🚗
-                                    @elseif($servicio->nombre === 'Late check-out') 🕐
-                                    @else 🏨
-                                    @endif
+                                    🏨
                                 </span>
 
                                 <span class="servicio-nombre">{{ $servicio->nombre }}</span>

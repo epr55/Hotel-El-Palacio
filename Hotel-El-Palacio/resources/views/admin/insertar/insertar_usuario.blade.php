@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Editar Servicio')
+@section('title', 'Insertar Usuario')
 
 @section('content')
 
@@ -140,57 +140,120 @@
         width: 55%;
     }
 
-    /*CSS SOLO SERVICIOS*/
-    .tipo-cobro-hint {
-        font-size: 0.85rem;
-        color: #666;
-        margin-top: 4px;
+    /*CSS SOLO PARA USUARIOS*/
+    .options-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 14px;
+        margin-top: 10px;
+    }
+
+    .option-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        border-radius: 14px;
+        border: 2px solid #e0e0e0;
+        background-color: #FAFAFA;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .option-card input {
+        display: none;
+    }
+
+    .rol-user {
+        background-color: #F3F4F6;
+        color: #374151;
+    }
+    .option-card:has(input:checked).rol-user {
+        background-color: #E5E7EB;
+        border-color: #6B7280;
+        transform: scale(1.03);
+    }
+
+    .rol-recepcionista {
+        background-color: #E0F2FE;
+        color: #075985;
+    }
+    .option-card:has(input:checked).rol-recepcionista {
+        background-color: #BAE6FD;
+        border-color: #0284C7;
+        transform: scale(1.05);
+        box-shadow: 0 8px 22px rgba(2,132,199,0.35);
+    }
+
+    .rol-admin {
+        background-color: #fde68a;
+        color: #92400e;
+        border-color: #facc15;
+    }
+
+    .option-card:has(input:checked).rol-admin {
+        background-color: #facc15;      /* amarillo más intenso */
+        border-color: #eab308;
+        transform: scale(1.07);
+        box-shadow: 0 10px 30px rgba(234,179,8,0.45);
     }
 </style>
 
 <div class="form-wrapper">
     <div class="form-container">
+        <h3 class="form-title">Insertar Usuario</h3>
 
-        <h3 class="form-title">Editar Servicio</h3>
-
-        <form action="{{ route('admin.editar.servicio', $servicio->id) }}" method="POST">
+        <form method="POST" action="{{ route('admin.insertar.usuario') }}">
             @csrf
-            @method('PUT')
 
             <div class="form-group">
                 <label>Nombre</label>
-                <input type="text" name="nombre" class="form-control" value="{{ old('nombre', $servicio->nombre) }}" required>
+                <input type="text" name="name" class="form-control"
+                       value="{{ old('name') }}" required>
             </div>
 
             <div class="form-group">
-                <label>Precio (€)</label>
-                <input type="number" step="0.01" name="precio" class="form-control" value="{{ old('precio', $servicio->precio) }}" required>
+                <label>Email</label>
+                <input type="email" name="email" class="form-control"
+                       value="{{ old('email') }}" required>
             </div>
 
             <div class="form-group">
-                <label>Tipo de cobro</label>
-                <select name="tipo_cobro" class="form-control" required>
-                    <option value="por_persona_noche" {{ $servicio->tipo_cobro == 'por_persona_noche' ? 'selected' : '' }}>
-                        Por persona y noche
-                    </option>
-                    <option value="por_noche" {{ $servicio->tipo_cobro == 'por_noche' ? 'selected' : '' }}>
-                        Por noche
-                    </option>
-                    <option value="personalizable_por_persona" {{ $servicio->tipo_cobro == 'personalizable_por_persona' ? 'selected' : '' }}>
-                        Por persona (personalizable)
-                    </option>
-                    <option value="unico" {{ $servicio->tipo_cobro == 'unico' ? 'selected' : '' }}>
-                        Pago único
-                    </option>
-                </select>
-                <div class="tipo-cobro-hint">
-                    Define cómo se aplica el precio del servicio
+            <label>Teléfono</label>
+            <input type="text" name="telefono" class="form-control" value="{{ old('telefono') }}">
+        </div>
+
+
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label>Confirmar contraseña</label>
+                <input type="password" name="password_confirmation" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label>Rol del usuario</label>
+
+                <div class="options-grid">
+                    <label class="option-card rol-user">
+                        <input type="radio" name="rol" value="user" {{ old('rol', 'user') === 'user' ? 'checked' : '' }}>
+                        Usuario
+                    </label>
+
+                    <label class="option-card rol-recepcionista">
+                        <input type="radio" name="rol" value="recepcionista" {{ old('rol') === 'recepcionista' ? 'checked' : '' }}>
+                        Recepcionista
+                    </label>
+
+                    <label class="option-card rol-admin">
+                        <input type="radio" name="rol" value="admin" {{ old('rol') === 'admin' ? 'checked' : '' }}>
+                        Administrador
+                    </label>
                 </div>
-            </div>
-
-            <div class="form-group">
-                <label>Descripción</label>
-                <textarea name="descripcion" class="form-control" rows="4">{{ old('descripcion', $servicio->descripcion) }}</textarea>
             </div>
 
             <div class="form-actions">
@@ -199,11 +262,10 @@
                 </button>
 
                 <button type="submit" class="btn-primary">
-                    Editar
+                    Insertar
                 </button>
             </div>
         </form>
-
     </div>
 </div>
 

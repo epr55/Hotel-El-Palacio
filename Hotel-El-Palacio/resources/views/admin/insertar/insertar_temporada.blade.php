@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Editar Servicio')
+@section('title','Insertar Temporada')
 
 @section('content')
 
@@ -140,57 +140,105 @@
         width: 55%;
     }
 
-    /*CSS SOLO SERVICIOS*/
-    .tipo-cobro-hint {
+    /*CSS SOLO PARA TEMPORADAS*/
+    .fecha-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+
+    .fecha-ayuda {
         font-size: 0.85rem;
         color: #666;
-        margin-top: 4px;
+        margin-top: 6px;
     }
 </style>
 
 <div class="form-wrapper">
     <div class="form-container">
 
-        <h3 class="form-title">Editar Servicio</h3>
+        <h3 class="form-title">Insertar Temporada</h3>
 
-        <form action="{{ route('admin.editar.servicio', $servicio->id) }}" method="POST">
+        <form method="POST" action="{{ route('admin.insertar.temporada') }}">
             @csrf
-            @method('PUT')
 
             <div class="form-group">
                 <label>Nombre</label>
-                <input type="text" name="nombre" class="form-control" value="{{ old('nombre', $servicio->nombre) }}" required>
+                <input type="text" name="nombre" class="form-control" value="{{ old('nombre') }}" required>
             </div>
 
             <div class="form-group">
-                <label>Precio (€)</label>
-                <input type="number" step="0.01" name="precio" class="form-control" value="{{ old('precio', $servicio->precio) }}" required>
+                <label>Multiplicador</label>
+                <input type="number" step="0.01" min="0" name="multiplicador" class="form-control" value="{{ old('multiplicador') }}" required>
             </div>
 
             <div class="form-group">
-                <label>Tipo de cobro</label>
-                <select name="tipo_cobro" class="form-control" required>
-                    <option value="por_persona_noche" {{ $servicio->tipo_cobro == 'por_persona_noche' ? 'selected' : '' }}>
-                        Por persona y noche
-                    </option>
-                    <option value="por_noche" {{ $servicio->tipo_cobro == 'por_noche' ? 'selected' : '' }}>
-                        Por noche
-                    </option>
-                    <option value="personalizable_por_persona" {{ $servicio->tipo_cobro == 'personalizable_por_persona' ? 'selected' : '' }}>
-                        Por persona (personalizable)
-                    </option>
-                    <option value="unico" {{ $servicio->tipo_cobro == 'unico' ? 'selected' : '' }}>
-                        Pago único
-                    </option>
-                </select>
-                <div class="tipo-cobro-hint">
-                    Define cómo se aplica el precio del servicio
+                <label>Fecha de inicio</label>
+
+                <div class="fecha-grid">
+                    <select name="inicio_dia" class="form-control" required>
+                        <option value="">Día</option>
+                        @for($d = 1; $d <= 31; $d++)
+                            <option value="{{ $d }}" {{ old('inicio_dia') == $d ? 'selected' : '' }}>
+                                {{ $d }}
+                            </option>
+                        @endfor
+                    </select>
+
+                    <select name="inicio_mes" class="form-control" required>
+                        <option value="">Mes</option>
+                        @php
+                            $meses = [
+                                1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril',
+                                5 => 'Mayo', 6 => 'Junio', 7 => 'Julio', 8 => 'Agosto',
+                                9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre'
+                            ];
+                        @endphp
+
+                        @foreach($meses as $num => $nombre)
+                            <option value="{{ $num }}" {{ old('inicio_mes') == $num ? 'selected' : '' }}>
+                                {{ $nombre }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="fecha-ayuda">
+                    Día y mes en que comienza la temporada
                 </div>
             </div>
 
+
             <div class="form-group">
-                <label>Descripción</label>
-                <textarea name="descripcion" class="form-control" rows="4">{{ old('descripcion', $servicio->descripcion) }}</textarea>
+                <label>Fecha de fin</label>
+
+                <div class="fecha-grid">
+                    <select name="fin_dia" class="form-control" required>
+                        <option value="">Día</option>
+                        @for($d = 1; $d <= 31; $d++)
+                            <option value="{{ $d }}" {{ old('fin_dia') == $d ? 'selected' : '' }}>
+                                {{ $d }}
+                            </option>
+                        @endfor
+                    </select>
+
+                    <select name="fin_mes" class="form-control" required>
+                        <option value="">Mes</option>
+                        @foreach($meses as $num => $nombre)
+                            <option value="{{ $num }}" {{ old('fin_mes') == $num ? 'selected' : '' }}>
+                                {{ $nombre }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="fecha-ayuda">
+                    Día y mes en que termina la temporada
+                </div>
+            </div>
+
+            <div class="fecha-ayuda" style="text-align:center; margin-top:20px;">
+                El año no se tiene en cuenta.
             </div>
 
             <div class="form-actions">
@@ -199,11 +247,10 @@
                 </button>
 
                 <button type="submit" class="btn-primary">
-                    Editar
+                    Insertar
                 </button>
             </div>
         </form>
-
     </div>
 </div>
 

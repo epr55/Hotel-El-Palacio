@@ -11,7 +11,7 @@ class Temporada extends Model
     protected $table = "temporadas";
     protected $primaryKey = 'id';
     public $timestamps = false;
-    protected $fillable = ['id','nombre','multiplicador','fecha_inicio','fecha_fin'];
+    protected $fillable = ['id','nombre','multiplicador','fecha_inicio','fecha_final'];
 
     public function reservas()
     {

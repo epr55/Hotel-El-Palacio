@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Editar Servicio')
+@section('title', 'Insertar Categoría')
 
 @section('content')
 
@@ -139,58 +139,28 @@
     .btn-secondary:hover::after {
         width: 55%;
     }
-
-    /*CSS SOLO SERVICIOS*/
-    .tipo-cobro-hint {
-        font-size: 0.85rem;
-        color: #666;
-        margin-top: 4px;
-    }
 </style>
 
 <div class="form-wrapper">
     <div class="form-container">
+        <h3 class="form-title">Insertar Categoría</h3>
 
-        <h3 class="form-title">Editar Servicio</h3>
-
-        <form action="{{ route('admin.editar.servicio', $servicio->id) }}" method="POST">
+        <form method="POST" action="{{ route('admin.insertar.categoria') }}">
             @csrf
-            @method('PUT')
 
             <div class="form-group">
                 <label>Nombre</label>
-                <input type="text" name="nombre" class="form-control" value="{{ old('nombre', $servicio->nombre) }}" required>
+                <input type="text" name="nombre" class="form-control" value="{{ old('nombre') }}" required>
             </div>
 
             <div class="form-group">
-                <label>Precio (€)</label>
-                <input type="number" step="0.01" name="precio" class="form-control" value="{{ old('precio', $servicio->precio) }}" required>
-            </div>
-
-            <div class="form-group">
-                <label>Tipo de cobro</label>
-                <select name="tipo_cobro" class="form-control" required>
-                    <option value="por_persona_noche" {{ $servicio->tipo_cobro == 'por_persona_noche' ? 'selected' : '' }}>
-                        Por persona y noche
-                    </option>
-                    <option value="por_noche" {{ $servicio->tipo_cobro == 'por_noche' ? 'selected' : '' }}>
-                        Por noche
-                    </option>
-                    <option value="personalizable_por_persona" {{ $servicio->tipo_cobro == 'personalizable_por_persona' ? 'selected' : '' }}>
-                        Por persona (personalizable)
-                    </option>
-                    <option value="unico" {{ $servicio->tipo_cobro == 'unico' ? 'selected' : '' }}>
-                        Pago único
-                    </option>
-                </select>
-                <div class="tipo-cobro-hint">
-                    Define cómo se aplica el precio del servicio
-                </div>
+                <label>Capacidad</label>
+                <input type="number" name="capacidad" class="form-control" value="{{ old('capacidad') }}" required>
             </div>
 
             <div class="form-group">
                 <label>Descripción</label>
-                <textarea name="descripcion" class="form-control" rows="4">{{ old('descripcion', $servicio->descripcion) }}</textarea>
+                <textarea name="descripcion" class="form-control" value="4">{{ old('descripcion') }}</textarea>
             </div>
 
             <div class="form-actions">
@@ -199,11 +169,10 @@
                 </button>
 
                 <button type="submit" class="btn-primary">
-                    Editar
+                    Insertar
                 </button>
             </div>
         </form>
-
     </div>
 </div>
 

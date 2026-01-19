@@ -99,6 +99,26 @@
         border-radius: 2px;
     }
 
+    .btn-edit {
+        color: #6F540F;
+        background-color: #FDECC8;
+        border-color: #E6C27A;
+    }
+
+
+    .btn-edit::after {
+        background-color: #D39D55;
+    }
+
+    .btn-edit:hover {
+        border-color: #D39D55;
+        background-color: #FFF6E8;
+    }
+
+    .btn-edit:hover::after {
+        width: 60%;
+    }
+
     .btn-delete {
         color: #7F1D1D;
         background-color: #FBDADA;
@@ -116,6 +136,25 @@
 
     .btn-delete:hover::after {
         width: 70%;
+    }
+
+    .btn-add {
+        color: #166534;
+        background-color: #DCFCE7;
+        border-color: #86EFAC;
+    }
+
+    .btn-add::after {
+        background-color: #16A34A;
+    }
+
+    .btn-add:hover {
+        border-color: #16A34A;
+        background-color: #ECFDF5;
+    }
+
+    .btn-add:hover::after {
+        width: 65%;
     }
 
     .pagination-wrapper {
@@ -212,9 +251,17 @@
 
         <h3 class="table-title">Usuarios registrados</h3>
 
-        <a href="{{ route('home') }}" class="btn-back-admin">
-            Atras
-        </a>
+        <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 20px;">
+            <a href="{{ route('home') }}" class="btn-back-admin">
+                Atrás
+            </a>
+
+            <form action="{{ route('admin.formulario.insertar.usuario') }}" method="GET">
+                <button type="submit" class="btn-action btn-add">
+                    Añadir
+                </button>
+            </form>
+        </div>
 
         <table>
             <thead>

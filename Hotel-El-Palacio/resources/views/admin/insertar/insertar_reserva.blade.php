@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Editar Reserva')
+@section('title', 'Insertar Reserva')
 
 @section('content')
 
@@ -214,17 +214,17 @@
 <div class="form-wrapper">
     <div class="form-container">
 
-        <h3 class="form-title">Editar Reserva</h3>
+        <h3 class="form-title">Insertar Reserva</h3>
 
-        <form method="POST" action="{{ route('admin.editar.reserva', $reserva->id) }}">
+        <form method="POST" action="{{ route('admin.insertar.reserva') }}">
             @csrf
-            @method('PUT')
 
             <div class="form-group">
                 <label>Usuario</label>
                 <select name="user_id" class="form-control" required>
+                    <option value="">Seleccione un usuario</option>
                     @foreach($usuarios as $usuario)
-                        <option value="{{ $usuario->id }}" {{ $reserva->user_id == $usuario->id ? 'selected' : '' }}>
+                        <option value="{{ $usuario->id }}" {{ old('user_id') == $usuario->id ? 'selected' : '' }}>
                             {{ $usuario->name }} ({{ $usuario->correo }})
                         </option>
                     @endforeach
@@ -234,8 +234,9 @@
             <div class="form-group">
                 <label>Habitación</label>
                 <select name="habitacion_id" class="form-control" required>
+                    <option value="">Seleccione una habitación</option>
                     @foreach($habitaciones as $habitacion)
-                        <option value="{{ $habitacion->id }}" {{ $reserva->habitacion_id == $habitacion->id ? 'selected' : '' }}>
+                        <option value="{{ $habitacion->id }}" {{ old('habitacion_id') == $habitacion->id ? 'selected' : '' }}>
                             Habitación {{ $habitacion->numero }}
                         </option>
                     @endforeach
@@ -244,12 +245,12 @@
 
             <div class="form-group">
                 <label>Fecha inicio</label>
-                <input type="datetime-local" name="fecha_inicio" class="form-control" value="{{ \Carbon\Carbon::parse($reserva->fecha_inicio)->format('Y-m-d\TH:i') }}" required>
+                <input type="datetime-local" name="fecha_inicio" class="form-control" value="{{ old('fecha_inicio') }}" required>
             </div>
 
             <div class="form-group">
                 <label>Fecha fin</label>
-                <input type="datetime-local" name="fecha_final" class="form-control" value="{{ \Carbon\Carbon::parse($reserva->fecha_final)->format('Y-m-d\TH:i') }}" required>
+                <input type="datetime-local" name="fecha_final" class="form-control" value="{{ old('fecha_final') }}" required>
             </div>
 
             <div class="form-group">
@@ -258,19 +259,19 @@
                 <div class="options-grid estado-grid">
                     <label class="option-card estado-pendiente">
                         <input type="radio" name="estado" value="pendiente"
-                            {{ $reserva->estado === 'pendiente' ? 'checked' : '' }}>
+                            {{ old('estado', 'pendiente') == 'pendiente' ? 'checked' : '' }}>
                         Pendiente
                     </label>
 
                     <label class="option-card estado-confirmada">
                         <input type="radio" name="estado" value="confirmada"
-                            {{ $reserva->estado === 'confirmada' ? 'checked' : '' }}>
+                            {{ old('estado') == 'confirmada' ? 'checked' : '' }}>
                         Confirmada
                     </label>
 
                     <label class="option-card estado-cancelada">
                         <input type="radio" name="estado" value="cancelada"
-                            {{ $reserva->estado === 'cancelada' ? 'checked' : '' }}>
+                            {{ old('estado') == 'cancelada' ? 'checked' : '' }}>
                         Cancelada
                     </label>
                 </div>
@@ -282,7 +283,7 @@
                 <div class="options-grid">
                     @foreach($servicios as $servicio)
                         <label class="option-card">
-                            <input type="checkbox" name="servicios[]" value="{{ $servicio->id }}" {{ $reserva->servicios->contains($servicio->id) ? 'checked' : '' }}>
+                            <input type="checkbox" name="servicios[]" value="{{ $servicio->id }}" {{ in_array($servicio->id, old('servicios', [])) ? 'checked' : '' }}>
                             {{ $servicio->nombre }}
                         </label>
                     @endforeach
@@ -295,7 +296,7 @@
                 </button>
 
                 <button type="submit" class="btn-primary">
-                    Editar
+                    Insertar
                 </button>
             </div>
         </form>

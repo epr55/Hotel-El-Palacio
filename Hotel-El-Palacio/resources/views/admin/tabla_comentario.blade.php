@@ -138,6 +138,25 @@
         width: 70%;
     }
 
+    .btn-add {
+        color: #166534;
+        background-color: #DCFCE7;
+        border-color: #86EFAC;
+    }
+
+    .btn-add::after {
+        background-color: #16A34A;
+    }
+
+    .btn-add:hover {
+        border-color: #16A34A;
+        background-color: #ECFDF5;
+    }
+
+    .btn-add:hover::after {
+        width: 65%;
+    }
+
     .pagination-wrapper {
         display: flex;
         justify-content: center;

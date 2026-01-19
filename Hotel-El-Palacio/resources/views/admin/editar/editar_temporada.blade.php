@@ -162,13 +162,80 @@
 
             <div class="form-group">
                 <label>Fecha inicio</label>
-                <input type="date" name="fecha_inicio" class="form-control" value="{{ \Carbon\Carbon::parse($temporada->fecha_inicio)->format('Y-m-d') }}" required>
+
+                <input type="date"
+                    name="fecha_inicio"
+                    id="fecha_inicio"
+                    hidden
+                    value="{{ \Carbon\Carbon::parse($temporada->fecha_inicio)->format('Y-m-d') }}">
+
+                <div style="display:flex; gap:10px;">
+                    <select id="inicio_dia" class="form-control">
+                        @for ($d = 1; $d <= 31; $d++)
+                            <option value="{{ $d }}"
+                                {{ \Carbon\Carbon::parse($temporada->fecha_inicio)->day == $d ? 'selected' : '' }}>
+                                {{ $d }}
+                            </option>
+                        @endfor
+                    </select>
+
+                    <select id="inicio_mes" class="form-control">
+                        @foreach([
+                            1=>'Enero',2=>'Febrero',3=>'Marzo',4=>'Abril',
+                            5=>'Mayo',6=>'Junio',7=>'Julio',8=>'Agosto',
+                            9=>'Septiembre',10=>'Octubre',11=>'Noviembre',12=>'Diciembre'
+                        ] as $num => $mes)
+                            <option value="{{ $num }}"
+                                {{ \Carbon\Carbon::parse($temporada->fecha_inicio)->month == $num ? 'selected' : '' }}>
+                                {{ $mes }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <small style="color:#666;">
+                    Día y mes en que empieza la temporada
+                </small>
             </div>
+
 
             <div class="form-group">
                 <label>Fecha fin</label>
-                <input type="date" name="fecha_final" class="form-control" value="{{ \Carbon\Carbon::parse($temporada->fecha_final)->format('Y-m-d') }}" required>
+
+                <input type="date"
+                    name="fecha_final"
+                    id="fecha_final"
+                    hidden
+                    value="{{ \Carbon\Carbon::parse($temporada->fecha_final)->format('Y-m-d') }}">
+
+                <div style="display:flex; gap:10px;">
+                    <select id="fin_dia" class="form-control">
+                        @for ($d = 1; $d <= 31; $d++)
+                            <option value="{{ $d }}"
+                                {{ \Carbon\Carbon::parse($temporada->fecha_final)->day == $d ? 'selected' : '' }}>
+                                {{ $d }}
+                            </option>
+                        @endfor
+                    </select>
+
+                    <select id="fin_mes" class="form-control">
+                        @foreach([
+                            1=>'Enero',2=>'Febrero',3=>'Marzo',4=>'Abril',
+                            5=>'Mayo',6=>'Junio',7=>'Julio',8=>'Agosto',
+                            9=>'Septiembre',10=>'Octubre',11=>'Noviembre',12=>'Diciembre'
+                        ] as $num => $mes)
+                            <option value="{{ $num }}"
+                                {{ \Carbon\Carbon::parse($temporada->fecha_final)->month == $num ? 'selected' : '' }}>
+                                {{ $mes }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <small style="color:#666;">
+                    Día y mes en que termina la temporada
+                </small>
             </div>
+
 
             <div class="form-actions">
                 <button type="button" class="btn-secondary" onclick="window.location='{{ url()->previous() }}'">
@@ -182,5 +249,33 @@
         </form>
     </div>
 </div>
+
+<script>
+    function actualizarFecha(idInput, diaId, mesId) {
+        const input = document.getElementById(idInput);
+        const dia   = document.getElementById(diaId).value;
+        const mes   = document.getElementById(mesId).value;
+
+        const year = input.value.split('-')[0]; // mantenemos el año
+        const mesPad = mes.toString().padStart(2, '0');
+        const diaPad = dia.toString().padStart(2, '0');
+
+        input.value = `${year}-${mesPad}-${diaPad}`;
+    }
+
+    document.getElementById('inicio_dia').addEventListener('change', () =>
+        actualizarFecha('fecha_inicio', 'inicio_dia', 'inicio_mes')
+    );
+    document.getElementById('inicio_mes').addEventListener('change', () =>
+        actualizarFecha('fecha_inicio', 'inicio_dia', 'inicio_mes')
+    );
+
+    document.getElementById('fin_dia').addEventListener('change', () =>
+        actualizarFecha('fecha_final', 'fin_dia', 'fin_mes')
+    );
+    document.getElementById('fin_mes').addEventListener('change', () =>
+        actualizarFecha('fecha_final', 'fin_dia', 'fin_mes')
+    );
+</script>
 
 @endsection
