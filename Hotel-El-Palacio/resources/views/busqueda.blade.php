@@ -92,7 +92,10 @@
         min-width: 260px;
         background-color: #f3f3f3;
     }
-
+    .room-image img {
+        width: 260px;
+        height: 260px;
+    }
     .room-info {
         padding: 20px 28px;
         flex: 1;
@@ -280,10 +283,11 @@
                 </div>
 
                 <div class="room-actions">
-                    <a class="btn-room" href="{{ route('reserva.completar', ['habitacion' => $hab->id, 'checkin' => $checkin, 'checkout' => $checkout, 'huespedes' => $huespedes ?? 2]) }}">
+                    <a class="btn-room btn-outline" href="{{ route('ver.detalles', $hab->id) }}">
                         Ver detalles
                     </a>
-                    <a class="btn-room" href="{{ route('reserva.completar', ['habitacion' => $hab->id, 'checkin' => $checkin, 'checkout' => $checkout, 'huespedes' => $huespedes ?? 2]) }}">
+
+                    <a class="btn-room btn-primary" href="{{ route('reserva.completar', ['habitacion' => $hab->id, 'checkin' => $checkin, 'checkout' => $checkout, 'huespedes' => $huespedes ?? 2]) }}">
                         Reservar ahora
                     </a>
                 </div>

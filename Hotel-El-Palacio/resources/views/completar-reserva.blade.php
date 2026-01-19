@@ -11,6 +11,31 @@
         padding: 0 20px 60px;
     }
 
+    .top-actions {
+        margin-bottom: 25px;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 18px;
+        border-radius: 12px;
+        background: #F4F4F5;
+        color: #444;
+        font-weight: 700;
+        text-decoration: none;
+        border: 1.5px solid #d1d5db;
+        transition: all .2s ease;
+    }
+
+    .btn-back:hover {
+        background: #E5E7EB;
+        transform: translateY(-1px);
+    }
+
     .reserva-title {
         font-size: 2rem;
         font-weight: 700;
@@ -244,6 +269,12 @@
 
 
 <div class="reserva-container">
+
+    <div class="top-actions">
+        <a href="{{ route('home') }}" class="btn-back">
+            Atras
+        </a>
+    </div>
 
     <h2 class="reserva-title">Completa tu Reserva</h2>
 

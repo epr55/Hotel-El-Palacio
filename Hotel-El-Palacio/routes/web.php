@@ -34,6 +34,8 @@ use Illuminate\Support\Facades\Route;
     //Ruta para el buscador
     Route::get('/busqueda', [BusquedaController::class, 'index'])->name('busqueda');
 
+    Route::get('/detalles/{id}', [BusquedaController::class, 'verDetalles'])->name('ver.detalles');
+
     //Ruta para completar reserva (requiere autenticación)
     Route::get('/reserva/completar/{habitacion}', [ReservaController::class, 'completar'])->middleware('auth')->name('reserva.completar');
 

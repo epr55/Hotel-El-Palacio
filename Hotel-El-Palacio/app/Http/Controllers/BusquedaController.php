@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Habitacion; // Asegúrate de que el nombre del modelo sea este
+use App\Models\Servicio;
+use Serializable;
 
 class BusquedaController extends Controller
 {
-   public function index(Request $request)
+    public function index(Request $request)
     {
         $checkin = $request->input('checkin');
         $checkout = $request->input('checkout');
@@ -25,5 +27,12 @@ class BusquedaController extends Controller
             ->get();
 
         return view('busqueda', compact('habitaciones', 'checkin', 'checkout', 'huespedes'));
+    }
+
+    public function verDetalles($id)
+    {
+        $habitacion = Habitacion::with(['categoria','reservas.user','mantenimientos'])->findOrFail($id);
+        $servicios = Servicio::all();
+        return view('detalles', compact('habitacion','servicios'));
     }
 }
